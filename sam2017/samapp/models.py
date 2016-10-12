@@ -20,6 +20,23 @@ class Author(models.Model):
     lname = models.CharField(max_length=255)
     email = models.EmailField(unique=True, blank=False)
     password_regex = RegexValidator(regex=r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}$', message="Password must have at least 8 characters and must include at least one upper case letter, one lower case letter, and one numeric digit.")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.email
+
+
+class Paper(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    contact_author = models.ForeignKey(Author.email, on_delete=models.CASCADE())
+    version = models.FloatField()
+    formats = models.CharField()  # find the enumerate field for word and PDF
+    rate = models.FloatField(default=None)
+    document = models.FileField(upload_to='documents/')
+    sub_date = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
