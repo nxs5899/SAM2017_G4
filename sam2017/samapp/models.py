@@ -30,9 +30,11 @@ class Author(models.Model):
 class Paper(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
-    contact_author = models.ForeignKey(Author.email, on_delete=models.CASCADE())
+    contact_author = models.ForeignKey(Author, on_delete=models.CASCADE())
     version = models.FloatField()
-    formats = models.CharField()  # find the enumerate field for word and PDF
+    formats = ((DOC, 'doc'),
+               (PDF, 'pdf')
+               )  # find the enumerate field for word and PDF
     rate = models.FloatField(default=None)
     document = models.FileField(upload_to='documents/')
     sub_date = models.DateTimeField(auto_now_add=True)
