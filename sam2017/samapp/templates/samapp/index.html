@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+<div class="container">
+            {% if user.is_authenticated != True %}
+                <h1>Hi! Welcome to SAM 2017</h1>
+            {% else %}
+                <h1>Hi{{ ' ' }}{{ user.first_name }}! Welcome to SAM 2017</h1>
+            {% endif %}
+
+            <p>SAM 2017 is a web Application for Authors to share their papers and receive feedback and score provided by Experts.</p>
+
+            {% if user.is_authenticated != True %}
+                <p><a style="margin: 10px" class="btn btn-primary btn-lg" role="button" href="{% url 'samapp:login' %}">Sign-in »</a><a style="margin: 10px" class="btn btn-primary btn-lg" role="button" href="{% url 'samapp:register' %}">Not a member? Register now! »</a></p>
+            {% endif %}
+        </div>
+</body>
+</html>

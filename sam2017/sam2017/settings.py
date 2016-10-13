@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'samapp.apps.samappConfig',
+    'samapp.apps.SamappConfig',
 ]
 
 MIDDLEWARE_CLASSES = [

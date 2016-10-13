@@ -15,3 +15,10 @@ class PaperForm(forms.ModelForm):
     class Meta:
         model = Author
         fields = '__all__'
+
+
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = Author
+        fields = ("email", "password")
+
