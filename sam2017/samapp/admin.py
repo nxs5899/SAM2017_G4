@@ -13,4 +13,9 @@ class AuthorAdmin(admin.ModelAdmin):
     class Meta:
         model = Author
 
+class PaperAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Paper
+
 admin.site.register(Author, AuthorAdmin)
+admin.site.register(Paper)

@@ -12,14 +12,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Author(models.Model):
+    user = models.OneToOneField(User)
     fname = models.CharField(max_length=255)
     lname = models.CharField(max_length=255)
-    email = models.EmailField(unique=True, blank=False)
-    password_regex = RegexValidator(regex=r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}$', message="Password must have at least 8 characters and must include at least one upper case letter, one lower case letter, and one numeric digit.")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -28,15 +27,17 @@ class Author(models.Model):
 
 
 class Paper(models.Model):
+    formatChoices = (
+        ('PDF', 'PDF'),
+        ('Word', 'Word'),
+    )
+
     title = models.CharField(max_length=255)
-    contributing_authors = models.TextField(blank= True)
-    contact_author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.CharField(max_length=255)
     version = models.FloatField()
-    formats = (('DOC', 'doc'),
-               ('PDF', 'pdf')
-               )  # find the enumerate field for word and PDF
-    rate = models.FloatField(default=None)
-    document = models.FileField(upload_to='documents/')
+    paper = models.FileField(upload_to='documents/')
+    formats = models.CharField(max_length=5, choices=formatChoices)  # find the enumerate field for word and PDF
+    rate = models.FloatField(default=None, null=True)
     sub_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

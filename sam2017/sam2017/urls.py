@@ -13,10 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+
+
+from django.conf.urls import patterns, include, url
+from samapp.views import *
 from django.contrib import admin
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^(?i)samapp/',include('samapp.urls',namespace='samapp')),
-]
+urlpatterns = patterns('',
+                       url(r'^admin/',admin.site.urls), 
+                       url(r'^$', 'django.contrib.auth.views.login'),
+                       url(r'^logout/$', logout_page),
+                       url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+                       # If user is not login it will redirect to login page
+                       url(r'^register/$', register),
+                       url(r'^register/success/$', register_success),
+                       url(r'^home/$', home),
+                       url(r'^submitpaper/$', SubmitPaper),
+                       url(r'^successpaper/$', successpaper)
+                       )

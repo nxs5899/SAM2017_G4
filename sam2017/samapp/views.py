@@ -1,71 +1,78 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
-from django.forms import modelformset_factory
-from django.http import HttpResponseRedirect
-from django.core.context_processors import csrf
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+# views.py
+from samapp.forms import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import AuthorForm, UserLoginForm
-from django.contrib import auth
 
 
-# Create your views here.
-def index(request):
-    return render(request, 'samapp/index.html', context_instance=RequestContext(request))
-
-
-def login(request):
-    c = {}
-    c.update(csrf(request))
-    return render_to_response('samapp/login.html', c)
-
-
-def auth_view(request):
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    user = auth.authenticate(username=username, password=password)
-
-    if user is not None:
-        auth.login(request, user)
-        return HttpResponseRedirect('/accounts/loggedin')
-    else:
-        return HttpResponseRedirect('/accounts/invalid')
-
-
-def loggedin(request):
-    return render_to_response('samapp/loggedin.html',{'fullname' : request.user.username})
-
-
-def invalid_login(request):
-    return render_to_response('samapp/invalid_login.html')
-
-
-def logout(request):
-    auth.logout(request)
-    return render_to_response('samapp/logout.html')
-
-
-def register_user(request):
-    form = AuthorForm(request.POST)
+@csrf_protect
+def register(request):
     if request.method == 'POST':
+        form = AuthorForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/accounts/register_success')
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email']
+            )
+            return HttpResponseRedirect('/register/success/')
+    else:
+        form = AuthorForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
 
-        args = {}
-        args.update(csrf(request))
-
-        args['form'] = AuthorForm()
-        return render_to_response('samapp/register.html', args)
-
-
+    return render_to_response(
+        'registration/register.html',
+        variables,
+    )
 def register_success(request):
-    render_to_response('register_success.html')
+    return render_to_response(
+        'registration/success.html',
+    )
 
 
+def logout_page(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
 
+@login_required
+def home(request):
+    return render_to_response(
+        'home.html',
+        {'user': request.user}
+    )
 
+@login_required
+def SubmitPaper(request):
+    user = request.user
+
+    if request.method == 'POST' and 'submitpaper' in request.POST:
+        print("it is here")
+        form = PaperForm(request.POST, request.FILES)
+        if form.is_valid():
+            paper = Paper(title=form.cleaned_data['title'],
+                                         author=form.cleaned_data['author'],
+                                         version=form.cleaned_data['version'],
+                                         paper=form.cleaned_data['paper'],
+                                         formats=form.cleaned_data['formats'],
+                                         )
+            paper.save()
+            return HttpResponseRedirect('/successpaper/')
+
+    else:
+        form = PaperForm()
+        variables = RequestContext(request, {
+        'form': form })
+
+    return render_to_response('submitpaper.html', context_instance=RequestContext(request,
+        {'form': form}))
+
+def successpaper(request):
+    return render_to_response(
+        'successpaper.html',
+    )

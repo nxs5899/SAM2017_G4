@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Welcome to SAM2017{% endblock %}
+{% block head %}Welcome to SAM2017{% endblock %}
+{% block content %}
+    <p>Welcome {{ user.username }} !!!</p>
+	<a href="/submitpaper/"> Submit a paper </a> &nbsp  &nbsp
+    &nbsp<a href="/logout/">Logout</a>
+{% endblock %}
