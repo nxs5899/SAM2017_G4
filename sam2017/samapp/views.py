@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
 
 
 @csrf_protect
@@ -18,6 +19,15 @@ def register(request):
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email']
             )
+
+            author = Author(
+            user = user,
+            fname = form.cleaned_data['fname'],
+            lname = form.cleaned_data['lname']
+            )
+
+            user.save()
+            author.save()
             return HttpResponseRedirect('/register/success/')
     else:
         form = AuthorForm()
@@ -50,19 +60,20 @@ def home(request):
 @login_required
 def SubmitPaper(request):
     user = request.user
+    author = Author.objects.get(user=user)
 
     if request.method == 'POST' and 'submitpaper' in request.POST:
-        print("it is here")
         form = PaperForm(request.POST, request.FILES)
         if form.is_valid():
-            paper = Paper(title=form.cleaned_data['title'],
-                                         author=form.cleaned_data['author'],
+            paper = Paper(contact_author = author,
+                                         title=form.cleaned_data['title'],
+                                         submitter=form.cleaned_data['submitter'],
                                          version=form.cleaned_data['version'],
                                          paper=form.cleaned_data['paper'],
                                          formats=form.cleaned_data['formats'],
                                          )
             paper.save()
-            return HttpResponseRedirect('/successpaper/')
+            return HttpResponseRedirect('/SubmittedPapers/')
 
     else:
         form = PaperForm()
@@ -76,3 +87,27 @@ def successpaper(request):
     return render_to_response(
         'successpaper.html',
     )
+
+@login_required
+def submittedpapers(request):
+    author = Author.objects.get(user=request.user)
+    paper_info=Paper.objects.all()
+    paper_data={
+        'paper_detail':paper_info
+    }
+    try:
+        context = {'authorId':author.id}
+        papers = Paper.objects.all()
+        for object in papers:
+            if object.contact_author_id == author.id:
+                print (object.submitter)
+                print(object.title)
+                print(object.version)
+                print(object.formats)
+                print(object.paper)
+                context['papers'] = papers
+
+    except ObjectDoesNotExist:
+        print("Need to show the user that they haven't created the tables till now.")
+        # Need to have some functionality for this
+    return render_to_response('SubmittedPapers.html',context)

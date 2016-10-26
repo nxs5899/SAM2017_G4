@@ -29,5 +29,8 @@ urlpatterns = patterns('',
                        url(r'^register/success/$', register_success),
                        url(r'^home/$', home),
                        url(r'^submitpaper/$', SubmitPaper),
-                       url(r'^successpaper/$', successpaper)
+                       url(r'^successpaper/$', successpaper),
+                       url(r'^SubmittedPapers/$', submittedpapers),
+                       url(r'^SubmittedPapers/documents/$', submittedpapers)
+
                        )

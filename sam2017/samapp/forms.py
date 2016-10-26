@@ -15,6 +15,12 @@ class AuthorForm(forms.Form):
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
         label=_("Password (again)"))
+    fname = forms.CharField(max_length=25)
+    lname = forms.CharField(max_length=25)
+
+    class Meta:
+        model = Author
+        exclude = ('user')
 
     def clean_username(self):
         try:
@@ -29,6 +35,15 @@ class AuthorForm(forms.Form):
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
 
+    def getUsername(self):
+        return self.username
+
+    def getEmail(self):
+        return self.email
+
+    def getPassword(self):
+        return self.password1
+
 class PaperForm(forms.Form):
     formatChoices = (
         ('PDF', 'PDF'),
@@ -36,8 +51,16 @@ class PaperForm(forms.Form):
     )
 
 
+    submitter = forms.CharField(max_length=255)
     title = forms.CharField(max_length=255)
-    author = forms.CharField(max_length=255)
     version = forms.FloatField()
-    paper = forms.FileField()
     formats = forms.ChoiceField(choices=formatChoices, required=True)
+
+    def validate_file_extension(self):
+        import os
+        ext = os.path.splitext(self.name)[1]
+        valid_extensions = ['.pdf', '.docx']
+        if not ext in valid_extensions:
+            raise forms.ValidationError(_('Please upload a pdf or doc file'), code='invalid')
+
+    paper = forms.FileField(validators=[validate_file_extension], error_messages={'invalid':_("Please upload a pdf or doc file")})

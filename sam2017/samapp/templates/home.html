@@ -2,7 +2,10 @@
 {% block title %}Welcome to SAM2017{% endblock %}
 {% block head %}Welcome to SAM2017{% endblock %}
 {% block content %}
-    <p>Welcome {{ user.username }} !!!</p>
-	<a href="/submitpaper/"> Submit a paper </a> &nbsp  &nbsp
-    &nbsp<a href="/logout/">Logout</a>
+
+    <p>Welcome {{ user.username }} </p>
+	<p> <a href="/submitpaper/"> Submit a paper </a> </p>
+	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
+    <p> <a href="/logout/">Logout</a> </p>
+	
 {% endblock %}

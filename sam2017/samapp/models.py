@@ -22,8 +22,11 @@ class Author(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __unicode__(self):
+        return self.user.username
+
     def __str__(self):
-        return self.email
+        return str(self.fname) + ' ' + str(self.lname)
 
 
 class Paper(models.Model):
@@ -32,14 +35,18 @@ class Paper(models.Model):
         ('Word', 'Word'),
     )
 
+    contact_author = models.ForeignKey(Author)
+    submitter = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
     version = models.FloatField()
-    paper = models.FileField(upload_to='documents/')
     formats = models.CharField(max_length=5, choices=formatChoices)  # find the enumerate field for word and PDF
+    paper = models.FileField(upload_to='documents/')
     rate = models.FloatField(default=None, null=True)
     sub_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-title"]
 
     def __str__(self):
         return self.title
