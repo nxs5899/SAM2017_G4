@@ -29,6 +29,7 @@ class AuthorForm(forms.Form):
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
 
+
 class PaperForm(forms.Form):
     formatChoices = (
         ('PDF', 'PDF'),
