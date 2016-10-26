@@ -39,6 +39,8 @@ def register(request):
         'registration/register.html',
         variables,
     )
+
+
 def register_success(request):
     return render_to_response(
         'registration/success.html',
@@ -56,6 +58,7 @@ def home(request):
         'home.html',
         {'user': request.user}
     )
+
 
 @login_required
 def SubmitPaper(request):
@@ -82,6 +85,7 @@ def SubmitPaper(request):
 
     return render_to_response('submitpaper.html', context_instance=RequestContext(request,
         {'form': form}))
+
 
 def successpaper(request):
     return render_to_response(

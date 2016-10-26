@@ -35,6 +35,7 @@ class AuthorForm(forms.Form):
                 raise forms.ValidationError(_("The two password fields did not match."))
         return self.cleaned_data
 
+<<<<<<< HEAD
     def getUsername(self):
         return self.username
 
@@ -43,6 +44,8 @@ class AuthorForm(forms.Form):
 
     def getPassword(self):
         return self.password1
+=======
+>>>>>>> 4dd9b8507d44a3b661b0901dbb4d780c70eedb0f
 
 class PaperForm(forms.Form):
     formatChoices = (
