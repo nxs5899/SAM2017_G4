@@ -21,35 +21,13 @@
             <th>Version</th>
             <th>Format</th>
             <th>Paper</th>
-        </tr>
-    {% for object in papers %}
-        {% if object.contact_author_id == authorId %}
-        {% with b=1 %}
-        {% endwith %}
-            <tr>
-                <td><p>{{object.submitter}}</p></td>
-                <td><p>{{object.title}}</p></td>
-                <td><p>{{object.version}}</p></td>
-				<td><p>{{object.formats}}</p></td>
-               <td> <a href="/downloadPDF/" width="100" target="_blank"/> Paper </a>
-            </tr>
-    {% endif %}
-    {% endfor %}
-<!-- </table>
-{% for object in toolsRegister %}
-    {% if object.author_id == authorId %}
-    {% with b=1 %}
-    {% endwith %}
-        <p>{{object.nameOfTheTool}}</p>
-         <img src="{{object.image.url}}" class='img-res' width=100/>
-{% endif %}
-{% endfor %}}
-{% if b == 0 %}-->
+     
+
     <p>{{message}}</p>
 {% endif %}
 	   {% for object in papers %}
 			{% for group in user.groups.all %}
-				{% if group.name == 'PCM' or group.name == 'PCC'%}
+				{% if group.name == 'PCM' %}
 				{% with b=1 %}
 				{% endwith %}
             <tr>

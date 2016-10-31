@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <h1 class="center-align">
+        <span class="center-align" style = "color:#000000;">Submitted Papers</span>
+    </h1>
+    <div align="right">
+    <span align="right"><a href="/home">Go back to home</a></span>
+</div>
+{% endblock %}
+
+{% block content %}
+		<table class="center-align-table" border="2">
+     <tr>
+            <th>Author</th>
+            <th>Title</th>
+            <th>Version</th>
+            <th>Format</th>		
+			<th>Paper</th>
+					
+   
+	   
+		{% for object in paper %}
+				{% with b=1 %}
+				{% endwith %}
+            <tr>
+                <td><p>{{object.submitter}}</p></td>
+                <td><p>{{object.title}}</p></td>
+                <td><p>{{object.version}}</p></td>
+				<td><p>{{object.formats}}</p></td>
+				<td><p>{{object.document}}</p></td>
+			
+    
+	</tr>
+    {% endfor %}
+	{% endblock %}

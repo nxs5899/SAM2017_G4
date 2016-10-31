@@ -32,5 +32,6 @@ urlpatterns = patterns('',
                        url(r'^successpaper/$', successpaper),
                        url(r'^SubmittedPapers/$', submittedpapers),
                        url(r'^downloadPDF/$', downloadPDF),
-
+                       url(r'^pcmpapers/$', pcmpapers),
+                       url(r'^pccpapers/$', pccpapers),
                        )
