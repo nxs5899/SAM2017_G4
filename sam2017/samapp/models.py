@@ -52,4 +52,39 @@ class Paper(models.Model):
         return self.title
 
 
+class Notification(models.Model):
+    title = models.CharField(max_length=500, verbose_name=u"Title")
+    message = models.TextField(verbose_name=u"Message")
+    viewed = models.BooleanField(default=False, verbose_name=u"Viewd?")
+    recipient = models.ManyToManyField(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title + '' + self.message
+
+    notification_message_mapper = {
+        "PaperSubmitted": " dear Author, your paperId was successfully submitted. check ur not bar for later updates",
+        "SelectPaper": "dear PCMs, plz select papers to review ",
+        "SelectionComplete": "dear PCC, plz assign papers to PCMs",
+        "PaperAssigned": "dear PCMs, the paperId is assigned to you. plz start your review.",
+        "ReviewComplete": "dear PCC reviews are complete. plz check",
+        "PaperRate": "dear Author, ur paperId is rated.",
+    }
+
+    def _constructNotificationMessage(self, message, paperid):
+        paper = Paper.objects.get(pk=paperid)
+        custom_message = message.replace('paperId', paper.title)
+        #print("Changes message ??? ", custom_message)
+        return custom_message
+
+    def sendNotification(self, type, paperid, recipients):
+        notification = self
+        notification.title = type
+        #print("message " + self.notification_message_mapper[type])
+        notification.message = self._constructNotificationMessage(self.notification_message_mapper[type], paperid)
+        #print("constructed message " + notification.message)
+        notification.save()
+        notification.recipient.set(recipients)
+        notification.save()
 

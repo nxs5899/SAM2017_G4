@@ -3,10 +3,11 @@ from samapp.forms import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
+from .models import Paper, Author
 
 
 @csrf_protect
@@ -92,6 +93,7 @@ def successpaper(request):
         'successpaper.html',
     )
 
+
 @login_required
 def submittedpapers(request):
     author = Author.objects.get(user=request.user)
@@ -115,3 +117,9 @@ def submittedpapers(request):
         print("Need to show the user that they haven't created the tables till now.")
         # Need to have some functionality for this
     return render_to_response('SubmittedPapers.html',context)
+
+
+def show_notification(request):
+    notifications = Notification.objects.filter(recipient = request.user.pk)
+    user = get_object_or_404(User, pk=request.user.pk)
+    return render_to_response('view-notifications.html',{'notifications':notifications,'user':user})

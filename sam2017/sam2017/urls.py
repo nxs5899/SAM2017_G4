@@ -31,6 +31,8 @@ urlpatterns = patterns('',
                        url(r'^submitpaper/$', SubmitPaper),
                        url(r'^successpaper/$', successpaper),
                        url(r'^SubmittedPapers/$', submittedpapers),
-                       url(r'^SubmittedPapers/documents/$', submittedpapers)
+                       url(r'^SubmittedPapers/documents/$', submittedpapers),
+                       url(r'^notifications/$', show_notification, name='view-notifications'),
 
                        )
+

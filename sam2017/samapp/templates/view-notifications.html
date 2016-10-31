@@ -1,0 +1,22 @@
+{% extends 'ToolShare/base.html' %}
+{% block title %}SAM 2017 - View Notifications{% endblock %}
+{% block navbar_view-notifications %}active{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        {% if notifications %}
+            <ul class="list-group">
+            {% for notification in notifications %}
+                <li class="list-group-item">
+                    <strong class="list-group-item-heading">{{ notification.title }}</strong>
+                    -<h5 class="list-group-item-text">{{ notification.message }}</h5>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p> You have no notifications</p>
+        {% endif %}
+    {% else %}
+        <p>Please login to view your notifications</p>
+    {% endif %}
+{% endblock %}
