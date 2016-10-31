@@ -7,5 +7,19 @@
 	<p> <a href="/submitpaper/"> Submit a paper </a> </p>
 	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
     <p> <a href="/logout/">Logout</a> </p>
+    <p> <a href="/show_notifications/">Notifications</a> </p>
 	
-{% endblock %}
+	{% for group in user.groups.all %}
+		{% if group.name == 'PCM' or group.name == 'PCC' %}
+		<p> <a href="/pcmpapers/"> View and Select Submissions </a></p>
+		{% endif %}
+	{% endfor %}
+	
+	
+	
+	{% for group in user.groups.all %}
+		{% if group.name == 'PCC'%}
+			<p> <a href="/pccpapers/"> View and Assign Submissions </a></p>
+		{% endif %}	
+		{% endfor %}
+		{% endblock %}

@@ -7,6 +7,7 @@ from samapp.models import Paper
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
+
 def add_group_permissions(samapp, schemaeditor):
     #admin
     PCC, created = Group.objects.get_or_create(name='PCC')
@@ -19,6 +20,7 @@ def add_group_permissions(samapp, schemaeditor):
         )
         PCC.permissions.add(permission)
 
+
     PCM, created = Group.objects.get_or_create(name='PCM')
     if created:
         content_type1 = ContentType.objects.get_for_model(Paper)
@@ -30,12 +32,18 @@ def add_group_permissions(samapp, schemaeditor):
         PCM.permissions.add(permission)
 
 
+
+
 class Migration(migrations.Migration):
+
 
     dependencies = [
         ('samapp', '0001_initial'),
     ]
 
+
     operations = [
         migrations.RunPython(add_group_permissions),
     ]
+
+

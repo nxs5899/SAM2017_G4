@@ -1,10 +1,11 @@
 import re
+
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from samapp.models import *
+from django.core.exceptions import ValidationError
 
-
+from samapp.models import Author, Paper
 class AuthorForm(forms.Form):
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
                                 label=_("Username"), error_messages={
@@ -55,12 +56,20 @@ class PaperForm(forms.Form):
     title = forms.CharField(max_length=255)
     version = forms.FloatField()
     formats = forms.ChoiceField(choices=formatChoices, required=True)
+    document = forms.FileField()
 
-    def validate_file_extension(self):
-        import os
-        ext = os.path.splitext(self.name)[1]
-        valid_extensions = ['.pdf', '.docx']
-        if not ext in valid_extensions:
-            raise forms.ValidationError(_('Please upload a pdf or doc file'), code='invalid')
+    def clean(self):
+        try:
+            document = self.cleaned_data['document']
+        except KeyError:
+            raise forms.ValidationError(_('Please upload a paper.'), code='invalid')
+        if self.cleaned_data['formats'] == 'PDF':
+            if '.pdf' not in self.cleaned_data['document'].name:
+                 raise forms.ValidationError(_("You have selected the PDF format. Please upload a PDF document or change the format"))
+        elif self.cleaned_data['formats'] == 'Word':
+             if not self.cleaned_data['document'].name.endswith('.docx') and not self.cleaned_data['document'].name.endswith('.doc'):
+                 raise forms.ValidationError(_("You have selected the Word format. Please upload a Word document or change the format."))
+        else:
+            raise forms.ValidationError(_("Please upload a pdf or word document."))
+        return self.cleaned_data
 
-    paper = forms.FileField(validators=[validate_file_extension], error_messages={'invalid':_("Please upload a pdf or doc file")})

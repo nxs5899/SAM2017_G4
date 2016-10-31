@@ -40,7 +40,7 @@ class Paper(models.Model):
     title = models.CharField(max_length=255)
     version = models.FloatField()
     formats = models.CharField(max_length=5, choices=formatChoices)  # find the enumerate field for word and PDF
-    paper = models.FileField(upload_to='documents/')
+    document = models.FileField()
     rate = models.FloatField(default=None, null=True)
     sub_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -87,4 +87,3 @@ class Notification(models.Model):
         notification.save()
         notification.recipient.set(recipients)
         notification.save()
-

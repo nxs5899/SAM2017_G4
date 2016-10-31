@@ -1,29 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <title>SAM2017 Login Application |
+        {% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <h1>{% block head %}{% endblock %}</h1>
+        {% block content %}{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome to SAM 2017{% endblock %}</title>
+    </body>
+</html>
 
-    <!-- loads the path to your static files -->
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.min.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/jquery-ui.min.css' %}"/>
-    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
-    <script src="{% static '/js/jquery-3.1.1.min.js' %}"></script>
-    <script src="{% static '/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '/js/jquery-ui.min.js' %}"></script>
-</head>
-
-
-<body>
-
-
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-
-        <!--Header -->
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>{% block title %}Welcome to SAM 2017{% endblock %}</title>#}
+{##}
+{#    <!-- loads the path to your static files -->#}
+{#    {% load staticfiles %}#}
+{#    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.min.css' %}"/>#}
+{#    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}"/>#}
+{#    <link rel="stylesheet" type="text/css" href="{% static '/css/jquery-ui.min.css' %}"/>#}
+{#    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">#}
+{#    <script src="{% static '/js/jquery-3.1.1.min.js' %}"></script>#}
+{#    <script src="{% static '/js/bootstrap.min.js' %}"></script>#}
+{#    <script src="{% static '/js/jquery-ui.min.js' %}"></script>#}
+{#</head>#}
+{##}
+{##}
+{#<body>#}
+{##}
+{##}
+{#<nav class="navbar navbar-inverse">#}
+{#    <div class="container-fluid">#}
+{##}
+{#        <!--Header -->#}
 {#        <div class="navbar-header">#}
 {#            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">#}
 {#                <span class="icon-bar"></span>#}
@@ -32,27 +44,27 @@
 {#            </button>#}
 {#            <a class="navbar-brand" href="{% url 'ToolShare:index' %}">ToolShare</a>#}
 {#        </div>#}
-        <!-- Items -->
-        <div class="collapse navbar-collapse" id="topNavBar">
-            <ul class="nav navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="{% block navbar_my-tools %}{% endblock %}">
-                        <a href="{% url 'submittedpapers' %}">
-                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;
-                            My Papers
-                        </a>
-                    </li>
-                    <!--
-                     <li class="dropdown">
-                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
-                             <span class="caret"></span></a>
-                         <ul class="dropdown-menu">
-                             <li><a href="#">Page 1-1</a></li>
-                             <li><a href="#">Page 1-2</a></li>
-                             <li><a href="#">Page 1-3</a></li>
-                         </ul>
-                     </li>
-                     -->
+{#        <!-- Items -->#}
+{#        <div class="collapse navbar-collapse" id="topNavBar">#}
+{#            <ul class="nav navbar-nav">#}
+{#                {% if user.is_authenticated %}#}
+{#                    <li class="{% block navbar_my-tools %}{% endblock %}">#}
+{#                        <a href="{% url 'submittedpapers' %}">#}
+{#                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;#}
+{#                            My Papers#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <!--#}
+{#                     <li class="dropdown">#}
+{#                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1#}
+{#                             <span class="caret"></span></a>#}
+{#                         <ul class="dropdown-menu">#}
+{#                             <li><a href="#">Page 1-1</a></li>#}
+{#                             <li><a href="#">Page 1-2</a></li>#}
+{#                             <li><a href="#">Page 1-3</a></li>#}
+{#                         </ul>#}
+{#                     </li>#}
+{#                     -->#}
 {#                    <li class="{% block navbar_shed-tools %}{% endblock %}">#}
 {#                        <a href="{% url 'ToolShare:shed-tools' %}">#}
 {#                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;#}
@@ -71,18 +83,18 @@
 {#                            Return Tools#}
 {#                        </a>#}
 {#                    </li>#}
-                {% endif %}
-            </ul>
-            <!--
-            <form class="navbar-form navbar-left" role="search" method="get" action="#">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="">
-                </div>
-                <button type="submit" class="btn btn-default">Search</button>
-            </form>
-            -->
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
+{#                {% endif %}#}
+{#            </ul>#}
+{#            <!--#}
+{#            <form class="navbar-form navbar-left" role="search" method="get" action="#">#}
+{#                <div class="form-group">#}
+{#                    <input type="text" class="form-control" name="q" value="">#}
+{#                </div>#}
+{#                <button type="submit" class="btn btn-default">Search</button>#}
+{#            </form>#}
+{#            -->#}
+{#            <ul class="nav navbar-nav navbar-right">#}
+{#                {% if user.is_authenticated %}#}
 {#                    <li class="{% block navbar_myprofile %}{% endblock %}">#}
 {#                        <a href="{% url 'ToolShare:myprofile' %}">#}
 {#                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;#}
@@ -95,58 +107,58 @@
 {#                            Notifications#}
 {#                        </a>#}
 {#                    </li>#}
-                    <li class="">
-                        <a href="{% url 'logout_page' %}">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;
-                            Logout
-                        </a>
-                    </li>
+{#                    <li class="">#}
+{#                        <a href="{% url 'logout_page' %}">#}
+{#                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;#}
+{#                            Logout#}
+{#                        </a>#}
+{#                    </li>#}
 {#                    <li class="{% block navbar_password-change %}{% endblock %}">#}
 {#                        <a href="{% url 'ToolShare:password-change' %}">#}
 {#                            <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>&nbsp;#}
 {#                            Password Change#}
 {#                        </a>#}
 {#                    </li>#}
-                {% else %}
-                    <li class="{% block navbar_signin %}{% endblock %}">
-                        <a href="/">
-                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;
-                            Signin
-                        </a>
-                    </li>
-                    <li class="{% block navbar_register-user %}{% endblock %}">
-                        <a href="{% url 'register' %}">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;
-                            Register
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container">
-    {% block body %}
-    {% endblock %}
-</div>
-<!--
-{% if user.is_authenticated %}
-    <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
-{% else %}
-    <p>Welcome, new user. Please log in.</p>
-{% endif %}
--->
-<hr>
-
-<footer>
-
-</footer>
-<script>
-    jQuery(document).ready(function () {
-        jQuery("[required]").before("<span class='required'>*</span>");
-        jQuery("[data-toggle='tooltip']").tooltip({html: true});
-    });
-</script>
-</body>
-</html>
+{#                {% else %}#}
+{#                    <li class="{% block navbar_signin %}{% endblock %}">#}
+{#                        <a href="/">#}
+{#                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;#}
+{#                            Signin#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="{% block navbar_register-user %}{% endblock %}">#}
+{#                        <a href="{% url 'register' %}">#}
+{#                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;#}
+{#                            Register#}
+{#                        </a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+{##}
+{#<div class="container">#}
+{#    {% block body %}#}
+{#    {% endblock %}#}
+{#</div>#}
+{#<!--#}
+{#{% if user.is_authenticated %}#}
+{#    <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>#}
+{#{% else %}#}
+{#    <p>Welcome, new user. Please log in.</p>#}
+{#{% endif %}#}
+{#-->#}
+{#<hr>#}
+{##}
+{#<footer>#}
+{##}
+{#</footer>#}
+{#<script>#}
+{#    jQuery(document).ready(function () {#}
+{#        jQuery("[required]").before("<span class='required'>*</span>");#}
+{#        jQuery("[data-toggle='tooltip']").tooltip({html: true});#}
+{#    });#}
+{#</script>#}
+{#</body>#}
+{#</html>#}
