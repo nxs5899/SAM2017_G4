@@ -9,7 +9,7 @@
     <p> <a href="/logout/">Logout</a> </p>
 	
 	{% for group in user.groups.all %}
-		{% if group.name == 'PCM' or group.name == 'PCC' %}
+		{% if group.name == 'PCM' %}
 		<p> <a href="/pcmpapers/"> View and Select Submissions </a></p>
 		{% endif %}
 	{% endfor %}
