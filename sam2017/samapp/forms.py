@@ -1,11 +1,11 @@
-import re
-
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
 from samapp.models import Author, Paper
+
+
 class AuthorForm(forms.Form):
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
                                 label=_("Username"), error_messages={

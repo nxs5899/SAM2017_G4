@@ -72,17 +72,17 @@ class Notification(models.Model):
         "PaperRate": "dear Author, ur paperId is rated.",
     }
 
-    def _constructNotificationMessage(self, message, paperid):
-        paper = Paper.objects.get(pk=paperid)
-        custom_message = message.replace('paperId', paper.title)
+    def _constructNotificationMessage(self, message):
+        # paper = Paper.objects.get(pk=paperid)
+        custom_message = message
         #print("Changes message ??? ", custom_message)
         return custom_message
 
-    def sendNotification(self, type, paperid, recipients):
+    def sendNotification(self, type, recipients):
         notification = self
         notification.title = type
         #print("message " + self.notification_message_mapper[type])
-        notification.message = self._constructNotificationMessage(self.notification_message_mapper[type], paperid)
+        notification.message = self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()
         notification.recipient.set(recipients)
