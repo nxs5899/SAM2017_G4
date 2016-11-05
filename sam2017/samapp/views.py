@@ -4,10 +4,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Notification, Paper, Author
+from sam2017.settings import MEDIA_ROOT
 
 
 @csrf_protect
@@ -179,18 +180,14 @@ def pccpapers(request):
     return render_to_response('pccpapers.html',context)
 
 @login_required
-def downloadPDF(request):
-    user = request.user
-    author = Author.objects.get(user=user)
-    doc = Paper.objects.get(contact_author=author)
+def downloadPDF(request, paper_id):
+    doc = Paper.objects.get(pk=paper_id)
     title = doc.title
     version = doc.version
     formats = doc.formats
     document = doc.document
 
     context = {
-        'user':user,
-        'author': author,
         'doc':doc,
         'title':title,
         'version': version,

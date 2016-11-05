@@ -31,7 +31,7 @@
                 <td><p>{{object.title}}</p></td>
                 <td><p>{{object.version}}</p></td>
 				<td><p>{{object.formats}}</p></td>
-               <td> <a href="/downloadPDF/" width="100" target="_blank"/> Paper </a>
+               <td> <a href="{% url 'downloadPDF' object.id %}" width="100" target="_blank"/> Paper </a>
             </tr>
     {% endif %}
     {% endfor %}
