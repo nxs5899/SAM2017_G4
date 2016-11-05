@@ -16,8 +16,8 @@ class AuthorForm(forms.Form):
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)),
         label=_("Password (again)"))
-    fname = forms.CharField(max_length=25)
-    lname = forms.CharField(max_length=25)
+    fname = forms.CharField(max_length=25, label=_("First Name"))
+    lname = forms.CharField(max_length=25, label=_("Last Name"))
 
     class Meta:
         model = Author
