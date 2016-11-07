@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Notification, Paper, Author
+from .models import Notification, Paper, Author, Review
 from sam2017.settings import MEDIA_ROOT
 
 
@@ -214,3 +214,35 @@ def show_notification(request):
     user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'view-notifications.html',{'notifications':notifications,'user':user})
 
+@login_required
+def review_Rate_PCM(request):
+    '''
+    pCM rate
+    :param request:
+    :return:
+    '''
+
+    context=RequestContext(request)
+    reviewer = Review.objects.all()#(reviewer=reviewer,paperId=paper)# change to current user
+    paper_info = Paper.objects.get(pk=1)# fetch paper id from pcm page
+
+    context=RequestContext(request)
+
+
+    # if the method is POST and rating has to be saved
+    if request.method=='POST' or '/PCM_review/' in request.POST:
+        print('inside POst')
+
+        # reviewer.paperId=paprer_info#request.POST.get('title')
+        grade=request.POST.get('rating')
+        print(grade)
+        comments=request.POST.get('comments')
+        review1=Review.create(paper_info,grade,comments)
+
+        return render_to_response('PCM_review.html', context_instance=RequestContext(request))
+        # return render_to_response('pcmpapers.html', context)
+        # return pcmpapers(request)
+
+    else:
+        context['title']=paper_info
+        return render_to_response('PCM_review.html', context)

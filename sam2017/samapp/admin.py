@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Register your models here.
 
 
-from .models import Author, Paper
+from .models import Author, Paper, Review
 from .forms import AuthorForm, PaperForm
 
 
@@ -19,3 +19,4 @@ class PaperAdmin(admin.ModelAdmin):
 
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Paper)
+admin.site.register(Review)

@@ -87,3 +87,26 @@ class Notification(models.Model):
         notification.save()
         notification.recipient.set(recipients)
         notification.save()
+
+
+
+class Review(models.Model):
+    '''
+    Model for Review
+    author: smruthi
+    '''
+    paperId=models.ForeignKey(Paper)
+    # reviewer=models.ForeignKey(PCM)
+    grade=models.IntegerField(null=True)
+    comments=models.TextField()
+    submissiondate=models.DateTimeField(auto_now_add=True)
+    submissionDeadline=models.DateTimeField(auto_now_add=True)# change this after deadlines are set
+    def __str__(self):
+        return str(self.pk)
+
+    @classmethod
+    def create(cls,paperId,grade,comments):
+        reviewPaper=cls(paperId=paperId,grade=grade,comments=comments)
+
+        reviewPaper.save()
+        return reviewPaper
