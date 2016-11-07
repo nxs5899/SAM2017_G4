@@ -8,7 +8,6 @@
 	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
     <p> <a href="/logout/">Logout</a> </p>
     <p> <a href="/notifications/">Notifications</a> </p>
-    <p> <a href="/charts/">Charts</a> </p>
 	
 	{% for group in user.groups.all %}
 		{% if group.name == 'PCM' or group.name == 'PCC' %}

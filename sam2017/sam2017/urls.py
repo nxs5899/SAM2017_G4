@@ -35,5 +35,4 @@ urlpatterns = patterns('',
                        url(r'^pcmpapers/$', pcmpapers),
                        url(r'^pccpapers/$', pccpapers),
                        url(r'^notifications/$', show_notification),
-                       url(r'^charts/$', charts),
                        )

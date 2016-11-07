@@ -5,11 +5,8 @@ from samapp.forms import *
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
-<<<<<<< HEAD
 from django.shortcuts import render_to_response, get_object_or_404, render
-=======
 from django.shortcuts import render_to_response, get_object_or_404
->>>>>>> aaaf1d681a6b67d052e2d1bc0c29efcba86e9534
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
@@ -217,22 +214,3 @@ def show_notification(request):
     user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'view-notifications.html',{'notifications':notifications,'user':user})
 
-
-def charts(request):
-    xdata = ["Apple", "Apricot", "Avocado", "Banana", "Boysenberries", "Blueberries", "Dates", "Grapefruit", "Kiwi", "Lemon"]
-    ydata = [52, 48, 160, 94, 75, 71, 490, 82, 46, 17]
-    chartdata = {'x': xdata, 'y': ydata}
-    charttype = "pieChart"
-    chartcontainer = 'piechart_container'
-    data = {
-        'charttype': charttype,
-        'chartdata': chartdata,
-        'chartcontainer': chartcontainer,
-        'extra': {
-            'x_is_date': False,
-            'x_axis_format': '',
-            'tag_script_js': True,
-            'jquery_on_ready': False,
-        }
-    }
-    return render_to_response('chart.html', data)
