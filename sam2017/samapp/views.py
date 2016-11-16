@@ -10,8 +10,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Notification, Paper, Author, Review
+from .models import *
 from sam2017.settings import MEDIA_ROOT
+from django.contrib.auth.models import User, Group
 
 
 @csrf_protect
@@ -33,6 +34,8 @@ def register(request):
 
             user.save()
             author.save()
+            g = Group.objects.get(name='author')
+            g.user_set.add(user)
             return HttpResponseRedirect('/register/success/')
     else:
         form = AuthorForm()
@@ -44,7 +47,41 @@ def register(request):
         'registration/register.html',
         variables,
     )
+@csrf_protect
+def create_admin(request):
 
+    if request.method == 'POST':
+        form = AdminForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email']
+            )
+
+            samadmin = Samadmin(
+                user=user,
+                fname=form.cleaned_data['fname'],
+                lname=form.cleaned_data['lname']
+            )
+
+            user.save()
+            samadmin.save()
+            g = Group.objects.get(name='admin')
+            g.user_set.add(user)
+            return HttpResponseRedirect('/register/success/')
+    else:
+        form = AdminForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+    return render_to_response(
+        'registration/registeradmin.html',
+        variables,
+    )
+
+    
 
 def register_success(request):
     return render_to_response(
@@ -56,6 +93,72 @@ def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+@login_required
+def createpcc(request):
+
+    if request.method == 'POST':
+        form = AdminForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email']
+            )
+
+            pcc = PCC(
+                user=user,
+                fname=form.cleaned_data['fname'],
+                lname=form.cleaned_data['lname']
+            )
+
+            user.save()
+            pcc.save()
+            g = Group.objects.get(name='PCC')
+            g.user_set.add(user)
+            return HttpResponseRedirect('/home/')
+    else:
+        form = AdminForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+    return render_to_response(
+        'createpcc.html',
+        variables,
+    )
+
+def createpcm(request):
+
+    if request.method == 'POST':
+        form = AdminForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password1'],
+                email=form.cleaned_data['email']
+            )
+
+            pcm = PCM(
+                user=user,
+                fname=form.cleaned_data['fname'],
+                lname=form.cleaned_data['lname']
+            )
+
+            user.save()
+            pcm.save()
+            g = Group.objects.get(name='PCM')
+            g.user_set.add(user)
+            return HttpResponseRedirect('/home/')
+    else:
+        form = AdminForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+
+    return render_to_response(
+        'createpcm.html',
+        variables,
+    )
 
 @login_required
 def home(request):
@@ -145,7 +248,7 @@ def submittedpapers(request):
                 context['papers'] = papers
 
     except ObjectDoesNotExist:
-        print("Need to show the user that they haven't created the tables till now.")
+        print("")
         # Need to have some functionality for this
     return render_to_response('SubmittedPapers.html',context)
 
@@ -246,3 +349,4 @@ def review_Rate_PCM(request):
     else:
         context['title']=paper_info
         return render_to_response('PCM_review.html', context)
+

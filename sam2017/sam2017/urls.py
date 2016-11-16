@@ -26,6 +26,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
                        # If user is not login it will redirect to login page
                        url(r'^register/$', register),
+                       url(r'^registeradmin/$', create_admin),
                        url(r'^register/success/$', register_success),
                        url(r'^home/$', home),
                        url(r'^submitpaper/$', SubmitPaper),
@@ -35,4 +36,6 @@ urlpatterns = patterns('',
                        url(r'^pcmpapers/$', pcmpapers),
                        url(r'^pccpapers/$', pccpapers),
                        url(r'^notifications/$', show_notification),
+                       url(r'^createpcc/$', createpcc),
+                       url(r'^createpcm/$', createpcm)
                        )

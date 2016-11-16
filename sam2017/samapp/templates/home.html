@@ -4,10 +4,13 @@
 {% block content %}
 
     <p>Welcome {{ user.username }} </p>
-	<p> <a href="/submitpaper/"> Submit a paper </a> </p>
+		{% for group in user.groups.all %}
+		{% if group.name == 'PCM' or group.name == 'author' %}
+		<p> <a href="/submitpaper/"> Submit a paper </a> </p>
 	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
-    <p> <a href="/logout/">Logout</a> </p>
-    <p> <a href="/notifications/">Notifications</a> </p>
+		{% endif %}
+	{% endfor %}
+	
 	
 	{% for group in user.groups.all %}
 		{% if group.name == 'PCM' or group.name == 'PCC' %}
@@ -22,4 +25,16 @@
 			<p> <a href="/pccpapers/"> View and Assign Submissions </a></p>
 		{% endif %}	
 		{% endfor %}
-		{% endblock %}
+	
+	{% for group in user.groups.all %}
+		{% if group.name == 'admin'%}
+			<p> <a href="/createpcc/"> Create PCC account </a></p>
+			<p> <a href="/createpcm/"> Create PCM account </a></p>
+			<p> <a href="/manageaccounts/"> Manage accounts </a></p>
+			<p> <a href="/setdeadlines/"> Set Deadlines </a></p>
+			<p> <a href="/createtemplates/"> Create Templates </a></p>
+		{% endif %}	
+		{% endfor %}
+	<p> <a href="/logout/">Logout</a> </p>
+    <p> <a href="/notifications/">Notifications</a> </p>
+{% endblock %}
