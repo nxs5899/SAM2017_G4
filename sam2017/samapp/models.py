@@ -28,6 +28,41 @@ class Author(models.Model):
     def __str__(self):
         return str(self.fname) + ' ' + str(self.lname)
 
+class PCM(models.Model):
+    user = models.OneToOneField(User)
+    fname = models.CharField(max_length=255)
+    lname = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __str__(self):
+        return str(self.fname) + ' ' + str(self.lname)
+
+class PCC(models.Model):
+    user = models.OneToOneField(User)
+    fname = models.CharField(max_length=255)
+    lname = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __str__(self):
+        return str(self.fname) + ' ' + str(self.lname)
+
+class Samadmin(models.Model):
+    user = models.OneToOneField(User)
+    fname = models.CharField(max_length=255)
+    lname = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.user.username
+
+    def __str__(self):
+        return str(self.fname) + ' ' + str(self.lname)
 
 class Paper(models.Model):
     formatChoices = (
@@ -64,12 +99,12 @@ class Notification(models.Model):
         return self.title + '' + self.message
 
     notification_message_mapper = {
-        "PaperSubmitted": " dear Author, your paperId was successfully submitted. check ur not bar for later updates",
-        "SelectPaper": "dear PCMs, plz select papers to review ",
-        "SelectionComplete": "dear PCC, plz assign papers to PCMs",
-        "PaperAssigned": "dear PCMs, the paperId is assigned to you. plz start your review.",
-        "ReviewComplete": "dear PCC reviews are complete. plz check",
-        "PaperRate": "dear Author, ur paperId is rated.",
+        "PaperSubmitted": " Your paper was successfully submitted. Check your notification bar for updates.",
+        "SelectPaper": "Please select papers to review.",
+        "Selection Complete": "Please assign papers to PCMs.",
+        "PaperAssigned": "The papers is assigned to you. Please start your review.",
+        "ReviewComplete": "Reviews are complete. Please check them.",
+        "PaperRate": "Your paper has been rated.",
     }
 
     def _constructNotificationMessage(self, message):
@@ -96,7 +131,7 @@ class Review(models.Model):
     author: smruthi
     '''
     paperId=models.ForeignKey(Paper)
-    # reviewer=models.ForeignKey(PCM)
+    reviewer=models.ForeignKey(PCM)
     grade=models.IntegerField(null=True)
     comments=models.TextField()
     submissiondate=models.DateTimeField(auto_now_add=True)
@@ -110,3 +145,6 @@ class Review(models.Model):
 
         reviewPaper.save()
         return reviewPaper
+
+
+
