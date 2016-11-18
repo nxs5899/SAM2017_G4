@@ -91,7 +91,7 @@ class Notification(models.Model):
     title = models.CharField(max_length=500, verbose_name=u"Title")
     message = models.TextField(verbose_name=u"Message")
     viewed = models.BooleanField(default=False, verbose_name=u"Viewd?")
-    recipients = models.ManyToManyField(User)
+    recipient = models.ManyToManyField(User)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -120,7 +120,7 @@ class Notification(models.Model):
         notification.message = self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()
-        notification.recipients.set(recipients)
+        notification.recipient.set(recipients)
         notification.save()
 
 
