@@ -206,7 +206,7 @@ def home(request):
 def SubmitPaper(request):
     user = request.user
     author = Author.objects.get(user=user)
-
+    current_pcc = User.objects.filter(groups__name='PCC')
     if request.method == 'POST' and 'submitpaper' in request.POST:
         form = PaperForm(request.POST, request.FILES)
         if form.is_valid():
@@ -219,7 +219,7 @@ def SubmitPaper(request):
                                          )
             paper.save()
             notification = Notification()
-            recipients = [request.user]
+            recipients = [user, current_pcc]
             notification.sendNotification("PaperSubmitted", recipients)
 
             return HttpResponseRedirect('/SubmittedPapers/')
@@ -346,7 +346,7 @@ def downloadPDF(request, paper_id):
 
 @login_required
 def show_notification(request):
-    notifications = Notification.objects.filter(recipient = request.user.pk)
+    notifications = Notification.objects.filter(recipients = request.user.pk)
 
     user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'view-notifications.html',{'notifications':notifications,'user':user})
