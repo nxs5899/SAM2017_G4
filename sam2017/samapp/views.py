@@ -93,6 +93,10 @@ def logout_page(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+def is_member2(user):
+    return user.groups.filter(name='admin').exists()
+
+@user_passes_test(is_member2)
 @login_required
 def createpcc(request):
 
@@ -127,8 +131,9 @@ def createpcc(request):
         variables,
     )
 
+@user_passes_test(is_member2)
+@login_required
 def createpcm(request):
-
     if request.method == 'POST':
         form = AdminForm(request.POST)
         if form.is_valid():
@@ -159,6 +164,35 @@ def createpcm(request):
         'createpcm.html',
         variables,
     )
+
+@user_passes_test(is_member2)
+@login_required
+def manageaccounts(request):
+    user = request.user
+    pccusers = PCC.objects.all()
+    pcmusers = PCM.objects.all()
+
+    context = {
+        'PCC': pccusers,
+        'PCM': pcmusers
+    }
+    if request.method == 'POST' and 'Deactivate' in request.POST:
+        username = request.POST.get('RequestID')
+        user2 = User.objects.get(pk=username)
+        user2.is_active = False
+        user2.save()
+        return HttpResponseRedirect('/manageaccounts/')
+
+    elif request.method == 'POST' and 'Activate' in request.POST:
+        username = request.POST.get('RequestID')
+        user2 = User.objects.get(pk=username)
+        user2.is_active = True
+        user2.save()
+
+        return HttpResponseRedirect('/manageaccounts/')
+
+    return render_to_response('manageaccounts.html', context_instance=RequestContext(request, context))
+
 
 @login_required
 def home(request):
