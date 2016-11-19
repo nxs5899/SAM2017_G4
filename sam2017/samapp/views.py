@@ -193,6 +193,49 @@ def manageaccounts(request):
 
     return render_to_response('manageaccounts.html', context_instance=RequestContext(request, context))
 
+@user_passes_test(is_member2)
+@login_required
+def UpdateUser(request, user_id):
+    user = User.objects.get(pk= user_id)
+
+   # try:
+    #userProfile = UserProfile.objects.get(user = user)
+
+    #except:
+    #user1 = request.user
+    #userProfile1 = UserProfile.objects.get(user = user1)
+    #notification = checkRequest(userProfile1)
+
+    if request.method == 'POST' and 'Save' in request.POST:
+        form = AdminForm(request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            userProfile.first_Name = form.cleaned_data['first_Name']
+            userProfile.last_Name = form.cleaned_data['last_Name']
+            userProfile.zipCode = form.cleaned_data['zipCode']
+            userProfile.address = form.cleaned_data['address']
+            userProfile.pickupArrangements = form.cleaned_data['pickupArrangements']
+            userProfile.date = form.cleaned_data['date1']
+            user.save()
+            userProfile.save()
+            variables = RequestContext(request, {
+                'form': form
+            })
+            return HttpResponseRedirect('/ManageUsers/')
+    else:
+        form = AdminForm()
+        form.fields['username'].initial = user.username
+        form.fields['email'].initial = user.email
+        form.fields['first_Name'].initial = userProfile.first_Name
+        form.fields['last_Name'].initial = userProfile.last_Name
+        form.fields['zipCode'].initial = userProfile.zipCode
+        form.fields['address'].initial = userProfile.address
+        form.fields['pickupArrangements'].initial = userProfile.pickupArrangements
+        form.fields['date1'].initial = userProfile.date
+    return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
+                                                                                             {'form': form,
+                                                                                              'notification': notification}))
+
 
 @login_required
 def home(request):

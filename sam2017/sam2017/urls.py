@@ -38,5 +38,6 @@ urlpatterns = patterns('',
                        url(r'^notifications/$', show_notification),
                        url(r'^createpcc/$', createpcc),
                        url(r'^createpcm/$', createpcm),
-                       url(r'^manageaccounts/$', manageaccounts)
+                       url(r'^manageaccounts/$', manageaccounts),
+                       url(r'^(?P<user_id>[0-9]+)/UpdateUser/$', UpdateUser, name='UpdateUser'),
                        )

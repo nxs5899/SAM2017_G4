@@ -18,10 +18,10 @@
 	 
 			<th> First Name </th>
 			<th> Last Name </th>
-
+			<th> Status </th>
 			<th> Update </th>
 			<th> Activate/Deactivate </th> 
-			<th> Status </th>  
+			  
 			 </tr>
     </thead>
      <tbody>
@@ -37,17 +37,50 @@
 			<td> {{ object.user.username }} </td>	
 			<td> {{ object.fname }}  </td>
 			<td> {{ object.lname }}  </td>
+			<td> PCC </td>
+			<td> <button class="btn btn-default"> <a href="{% url 'UpdateUser' object.user.id %}">  Update  </a> </button>
+             </td> 
+			 <td>
+			 {% if object.user.is_active = True %}
+			 <input class="btn btn-default" type="submit" value="Deactivate" name="Deactivate"/> 
+				  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
+			{% elif object.user.is_active = False %}
+			 <input class="btn btn-default" type="submit" value="Activate" name="Activate"/> 
+				  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
+			{% endif %}
+			</td> 
+		</tr>	
+		{% endfor %}	
+		
+		
+		{% for objecta in PCM %}
+		<tr>
+			<td> {{ objecta.user.username }} </td>	
+			<td> {{ objecta.fname }}  </td>
+			<td> {{ objecta.lname }}  </td>
+			<td> PCM </td>
+			<td>  <button class="btn btn-default"> <a href="{% url 'UpdateUser' objecta.user.id %}">  Update  </a> </button>
+             </td> 
+			 <td>
+			 {% if objecta.user.is_active = True %}
+			 <input class="btn btn-default" type="submit" value="Deactivate" name="Deactivate"/> 
+				  <input type="hidden" value={{ objecta.user.id }} name="RequestID"/>
+			{% elif objecta.user.is_active = False %}
+			 <input class="btn btn-default" type="submit" value="Activate" name="Activate"/> 
+				  <input type="hidden" value={{ objecta.user.id }} name="RequestID"/>
+			{% endif %}
+			</td> 
 	
 		
-		
-			
-         
+		 </tr>
+		{% endfor %}	
+        
 		</form>		 
-		</tr>
+		
 		
 		
 	
-	{% endfor %}
+	
 </tbody>
 	</table>
   </div>
