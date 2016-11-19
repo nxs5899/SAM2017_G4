@@ -5,7 +5,7 @@
 
     <p>Welcome {{ user.username }} </p>
 		{% for group in user.groups.all %}
-		{% if group.name == 'PCM' or group.name == 'author' %}
+		{% if group.name == 'author' %}
 		<p> <a href="/submitpaper/"> Submit a paper </a> </p>
 	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
 		{% endif %}
@@ -13,7 +13,7 @@
 	
 	
 	{% for group in user.groups.all %}
-		{% if group.name == 'PCM' or group.name == 'PCC' %}
+		{% if group.name == 'PCM' %}
 		<p> <a href="/pcmpapers/"> View and Select Submissions </a></p>
 		{% endif %}
 	{% endfor %}
@@ -21,7 +21,7 @@
 	
 	
 	{% for group in user.groups.all %}
-		{% if group.name == 'PCM'%}
+		{% if group.name == 'PCC'%}
 			<p> <a href="/pccpapers/"> View and Assign Submissions </a></p>
 		{% endif %}	
 		{% endfor %}
