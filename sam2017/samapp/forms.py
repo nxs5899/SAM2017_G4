@@ -44,6 +44,8 @@ class AuthorForm(forms.Form):
 
     def getPassword(self):
         return self.password1
+
+
 class AdminForm(forms.Form):
     username = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)),
                                 label=_("Username"), error_messages={
@@ -88,8 +90,6 @@ class PaperForm(forms.Form):
         ('PDF', 'PDF'),
         ('Word', 'Word'),
     )
-
-
     submitter = forms.CharField(max_length=255)
     title = forms.CharField(max_length=255)
     version = forms.FloatField()
