@@ -176,14 +176,14 @@ def manageaccounts(request):
         'PCC': pccusers,
         'PCM': pcmusers
     }
-    if request.method == 'POST' and 'Deactivate' in request.POST:
+    if request.method == 'POST' and 'DeactivatePCC' in request.POST:
         username = request.POST.get('RequestID')
         user2 = User.objects.get(pk=username)
         user2.is_active = False
         user2.save()
         return HttpResponseRedirect('/manageaccounts/')
 
-    elif request.method == 'POST' and 'Activate' in request.POST:
+    elif request.method == 'POST' and 'ActivatePCC' in request.POST:
         username = request.POST.get('RequestID')
         user2 = User.objects.get(pk=username)
         user2.is_active = True
@@ -191,50 +191,82 @@ def manageaccounts(request):
 
         return HttpResponseRedirect('/manageaccounts/')
 
+    elif request.method == 'POST' and 'DeactivatePCM' in request.POST:
+        username = request.POST.get('RequestID1')
+        user3 = User.objects.get(pk=username)
+        user3.is_active = False
+        user3.save()
+
+        return HttpResponseRedirect('/manageaccounts/')
+
+    elif request.method == 'POST' and 'ActivatePCM' in request.POST:
+        username = request.POST.get('RequestID1')
+        user3 = User.objects.get(pk=username)
+        user3.is_active = True
+        user3.save()
+
+        return HttpResponseRedirect('/manageaccounts/')
     return render_to_response('manageaccounts.html', context_instance=RequestContext(request, context))
 
 @user_passes_test(is_member2)
 @login_required
-def UpdateUser(request, user_id):
+def UpdatePCC(request, user_id):
     user = User.objects.get(pk= user_id)
-
-   # try:
-    #userProfile = UserProfile.objects.get(user = user)
-
-    #except:
-    #user1 = request.user
-    #userProfile1 = UserProfile.objects.get(user = user1)
-    #notification = checkRequest(userProfile1)
+    userProfile = PCC.objects.get(user = user)
+    user1 = request.user
+    userProfile1 = Samadmin.objects.get(user = user1)
 
     if request.method == 'POST' and 'Save' in request.POST:
-        form = AdminForm(request.POST)
+        form = UserProfileForm(request.POST)
         if form.is_valid():
             user.email = form.cleaned_data['email']
-            userProfile.first_Name = form.cleaned_data['first_Name']
-            userProfile.last_Name = form.cleaned_data['last_Name']
-            userProfile.zipCode = form.cleaned_data['zipCode']
-            userProfile.address = form.cleaned_data['address']
-            userProfile.pickupArrangements = form.cleaned_data['pickupArrangements']
-            userProfile.date = form.cleaned_data['date1']
+            userProfile.fname = form.cleaned_data['fname']
+            userProfile.lname = form.cleaned_data['lname']
             user.save()
             userProfile.save()
             variables = RequestContext(request, {
                 'form': form
             })
-            return HttpResponseRedirect('/ManageUsers/')
+            return HttpResponseRedirect('/manageaccounts/')
     else:
-        form = AdminForm()
+        form = UserProfileForm()
         form.fields['username'].initial = user.username
         form.fields['email'].initial = user.email
-        form.fields['first_Name'].initial = userProfile.first_Name
-        form.fields['last_Name'].initial = userProfile.last_Name
-        form.fields['zipCode'].initial = userProfile.zipCode
-        form.fields['address'].initial = userProfile.address
-        form.fields['pickupArrangements'].initial = userProfile.pickupArrangements
-        form.fields['date1'].initial = userProfile.date
+        form.fields['fname'].initial = userProfile.fname
+        form.fields['lname'].initial = userProfile.lname
     return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
-                                                                                             {'form': form,
-                                                                                              'notification': notification}))
+                                                                                             {'form': form}))
+
+@user_passes_test(is_member2)
+@login_required
+def UpdatePCM(request, user_id):
+    user = User.objects.get(pk= user_id)
+    userProfile = PCM.objects.get(user = user)
+    user1 = request.user
+    userProfile1 = Samadmin.objects.get(user = user1)
+
+    if request.method == 'POST' and 'Save' in request.POST:
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            userProfile.fname = form.cleaned_data['fname']
+            userProfile.lname = form.cleaned_data['lname']
+            user.save()
+            userProfile.save()
+            variables = RequestContext(request, {
+                'form': form
+            })
+            return HttpResponseRedirect('/manageaccounts/')
+    else:
+        form = UserProfileForm()
+        form.fields['username'].initial = user.username
+        form.fields['email'].initial = user.email
+        form.fields['fname'].initial = userProfile.fname
+        form.fields['lname'].initial = userProfile.lname
+    return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
+                                                                                             {'form': form}))
+
+
 
 
 @login_required
