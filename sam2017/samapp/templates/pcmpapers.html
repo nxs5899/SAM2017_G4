@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'child-base.html' %}
 
 {% block title %}
     <h1 class="center-align">
@@ -9,36 +9,38 @@
 </div>
 {% endblock %}
 
-{% block content %}
+{% block innercontent %}
 
-<p></p>
 {% with b=0 %}
 {% endwith %}
 
-<table class="center-align-table" border="2">
-     <tr>
+<div class="container">
+<div class="row">
+<h1 id="header_margin">PCM Selected Papers</h1>
+<table class="table table-striped table-hover " border="0">
+    <thead>
+        <tr>
             <th>Author</th>
             <th>Title</th>
             <th>Version</th>
             <th>Format</th>		
-					
-     
-
+		</tr>
+     </thead>
     <p>{{message}}</p>
-	   
 		{% for object in paper %}
 				{% with b=1 %}
 				{% endwith %}
-            <tr>
+        <tbody>
+            <tr class="warning">
                 <td><p>{{object.submitter}}</p></td>
                 <td><p>{{object.title}}</p></td>
                 <td><p>{{object.version}}</p></td>
 				<td><p>{{object.formats}}</p></td>
-			
-    
-	</tr>
+            </tr>
+        </tbody>
 	{% endfor %}
-	
+</div>
+</div>
     <!--<a href="/home">Home</a>--><p></p>
 
-{% endblock %}
+{% endblock innercontent %}

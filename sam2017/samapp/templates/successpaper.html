@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "child-base.html" %}
 
 {% block title %}
     <h1 class="center-align">
@@ -9,9 +9,11 @@
 </div>
 {% endblock %}
 
-{% block content %}
-
+{% block innercontent %}
+<div class="container">
+<div class="row">
 <p> You have succesfully submitted your paper </p>
- 
-{% endblock %}
+</div>
+</div>
+{% endblock innercontent %}
 

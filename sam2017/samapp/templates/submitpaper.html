@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "child-base.html" %}
+
 {% block title %}
     <h1 class="center-align">
         <span style = "color:#000000;"> submit a paper</span>
@@ -8,20 +9,20 @@
         </div>
 {% endblock %}
 
-{% block content %}
+{% block innercontent %}
 
-<form method="post" action="/submitpaper/" enctype="multipart/form-data"> {% csrf_token %}
-        <table border="0">
-            {{ form.as_table }}
-			
-        </table>
-		<div class="center-align">
-             <input class="button-below-table" type="submit" value="Submit" name="submitpaper"/></p>
-        </div>
-</form>
+<div class="container">
+	<div class="row">
+        <h1 id="header_margin">Submit a Paper</h1>
+        <form method="post" action="/submitpaper/" enctype="multipart/form-data"> {% csrf_token %}
+            <table class="table table-hover " border="0">
+                {{ form.as_table }}
+            </table>
+                <div class="center-align">
+                     <input class="button-below-table btn btn-info" type="submit" value="Submit" name="submitpaper"/></p>
+                </div>
+        </form>
+    </div>
+</div>
 
-
-  
-
-
-{% endblock %}
+{% endblock innercontent %}

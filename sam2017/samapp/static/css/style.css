@@ -1,9 +1,128 @@
-.navbar{
-    border-radius: 0;
+body {
+  background-image: url('images/notepad.jpg');
 }
 
-.navbar-brand{
-    font-family:Shrikhand,cursive;
+#button_align{
+    padding-left:100px;
+}
+
+#welcome_user{
+    float:right;
+    margin-right:20px;
+    margin-top:10px;
+    font-size: 16px;
+}
+
+#sam_color{
+    color:#337ab7;
+}
+
+#id_username{
+    border-radius:4px;
+}
+
+#id_password{
+    border-radius:4px;
+}
+
+#id_email{
+    border-radius:4px;
+}
+
+#id_password1{
+    border-radius:4px;
+}
+
+#id_password2{
+    border-radius:4px;
+}
+
+#id_fname{
+    border-radius:4px;
+}
+
+#id_lname{
+    border-radius:4px;
+}
+
+#id_submitter{
+    border-radius:4px;
+}
+
+#id_title{
+    border-radius:4px;
+}
+
+#id_version{
+    border-radius:4px;
+    width:167px;
+}
+
+#id_formats{
+    border-radius:4px;
+}
+
+#id_document{
+    border-radius:4px;
+}
+
+.panel{
+    margin-top: 200px;
+    width: 60%;
+    opacity:0.7;
+}
+
+#login_header{
+    text-align: center;
+}
+
+.navbar-inverse{
+    background:#0e1a35;
+    border-radius:0px;
+    margin-bottom:0px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
+
+table {
+    background-color: #fff9;
+    margin-top: 20px;
+    border-radius:4px;
+    border-collapse: inherit;
+    border-spacing: 1px;
+}
+
+.table{
+    width:50%;
+}
+
+#header_margin{
+    margin-top:60px;
+}
+
+.dropdown{
+    color:white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #337ab7;
+    font-size:24px;
+}
+
+.navbar{
+    border-radius:0px;
+    color: #337ab7;
+}
+
+.list-group-item {
+    background-color: #fff9;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    background-color: #0e1a35;
+    border-color: #0e1a35;
 }
 
 .row.grid:nth-child(1){
@@ -18,6 +137,10 @@
     margin-left: -10px;
     color: #FB0000;
     font-size: 15px;
+}
+
+.btn-info{
+    width:80px;
 }
 /*
 body {

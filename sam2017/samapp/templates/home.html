@@ -1,20 +1,31 @@
-{% extends "base.html" %}
-{% block title %}Welcome to SAM2017{% endblock %}
-{% block head %}Welcome to SAM2017{% endblock %}
-{% block content %}
+{% extends "child-base.html" %}
+{% block innercontent %}
 
-    <p>Welcome {{ user.username }} </p>
+<p id="welcome_user" class="text-info"><i class="fa fa-user" aria-hidden="true"></i> Welcome {{ user.username }} </p>
+<div class="container">
+	<div class="row">
+	<h1 id="header_margin">&nbsp;Welcome to <span id="sam_color">SAM</span>2017!</h1>
+	<div class="col-md-4">
 		{% for group in user.groups.all %}
 		{% if group.name == 'author' %}
-		<p> <a href="/submitpaper/"> Submit a paper </a> </p>
-	<p> <a href="/SubmittedPapers/"> View your Submissions </a> </p>
+		<div class="list-group">
+			<a href="#" class="list-group-item active"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;&nbsp;Author Menu
+			</a>
+			<a href="/submitpaper/" class="list-group-item">Submit a paper
+			</a>
+			<a href="/SubmittedPapers/" class="list-group-item">View your Submissions
+			</a>
+		</div>
 		{% endif %}
 	{% endfor %}
 	
 	
 	{% for group in user.groups.all %}
 		{% if group.name == 'PCM' %}
-		<p> <a href="/pcmpapers/"> View and Select Submissions </a></p>
+		<div class="list-group">
+			<a href="#" class="list-group-item active"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;&nbsp;PCM Menu</a>
+			<a href="/pcmpapers/" class="list-group-item">View and Select Submissions</a>
+		</div>
 		{% endif %}
 	{% endfor %}
 	
@@ -22,19 +33,26 @@
 	
 	{% for group in user.groups.all %}
 		{% if group.name == 'PCC'%}
-			<p> <a href="/pccpapers/"> View and Assign Submissions </a></p>
+		<div class="list-group">
+			<a href="#" class="list-group-item active"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;&nbsp;PCC Menu</a>
+			<a href="/pccpapers/" class="list-group-item">View and Assign Submissions</a>
+		</div>
 		{% endif %}	
 		{% endfor %}
 	
 	{% for group in user.groups.all %}
 		{% if group.name == 'admin'%}
-			<p> <a href="/createpcc/"> Create PCC account </a></p>
-			<p> <a href="/createpcm/"> Create PCM account </a></p>
-			<p> <a href="/manageaccounts/"> Manage accounts </a></p>
-			<p> <a href="/setdeadlines/"> Set Deadlines </a></p>
-			<p> <a href="/createtemplates/"> Create Templates </a></p>
+		<div class="list-group">
+			<a href="#" class="list-group-item active"><i class="fa fa-bars" aria-hidden="true"></i>&nbsp;&nbsp;Admin Menu</a>
+			<a href="/createpcc/" class="list-group-item">Create PCC account</a>
+			<a href="/createpcm/" class="list-group-item">Create PCM account</a>
+			<a href="/manageaccounts/" class="list-group-item">Manage accounts</a>
+			<a href="/setdeadlines/" class="list-group-item">Set Deadlines</a>
+			<a href="/createtemplates/" class="list-group-item">Create Templates</a>
+		</div>
 		{% endif %}	
 		{% endfor %}
-	<p> <a href="/logout/">Logout</a> </p>
-    <p> <a href="/notifications/">Notifications</a> </p>
-{% endblock %}
+	</div>
+	</div>
+</div>
+{% endblock innercontent %}

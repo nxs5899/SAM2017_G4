@@ -1,22 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'child-base.html' %}
 {% block title %}SAM 2017 - View Notifications{% endblock %}
 {#{% block navbar_view-notifications %}active{% endblock %}#}
 
-{% block content %}
+{% block innercontent %}
 {#    {% if user.is_authenticated %}#}
 {#        {% if notifications %}#}
-            <ul >
+            <ol>
             {% for notification in notifications %}
                 <li>
-                    <strong>{{ notification.title }}</strong>
-                    <h5>{{ notification.message }}</h5>
+                    <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>{{ notification.title }}</strong> | {{ notification.message }}.
+                    </div>
                 </li>
             {% endfor %}
-            </ul>
+            </ol>
 {#        {% else %}#}
 {#            <p> You have no notifications</p>#}
 {#        {% endif %}#}
 {#    {% else %}#}
 {#        <p>Please login to view your notifications</p>#}
 {#    {% endif %}#}
-{% endblock %}
+{% endblock innercontent %}

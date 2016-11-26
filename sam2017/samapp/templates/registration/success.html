@@ -4,6 +4,13 @@
  Registration Completed Successfully
 {% endblock %}
 {% block content %}
-    Thank you for registering.
-    <a href="/">Login</a> 
+<div class="container">
+    <div class="row">
+        <div class="alert alert-dismissible alert-success" id="header_margin">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Well done!</strong> Thank you for registering!
+        </div>
+        <a href="/" class="btn btn-info">Login</a>
+    </div>
+</div>
 {% endblock %}
