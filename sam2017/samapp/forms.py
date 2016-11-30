@@ -2,8 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
-
-from samapp.models import Author, Paper
+from .models import Author, Deadline
 
 
 class AuthorForm(forms.Form):
@@ -111,3 +110,51 @@ class PaperForm(forms.Form):
             raise forms.ValidationError(_("Please upload a pdf or word document."))
         return self.cleaned_data
 
+
+
+class NotifTemForm(forms.Form):
+    messageTypes = (
+        ('paperSubmitted', 'paperSubmitted'),
+        ('selectpaper', 'selectpaper'),
+        ('assigntoReview', 'assigntoReview'),
+        ('startReview', 'startReview'),
+        ('reviewComplete', 'reviewComplete'),
+        ('paperRate', 'paperRate'),
+    )
+    title = forms.ChoiceField(choices=messageTypes, required=True)
+    message = forms.CharField(max_length=500)
+
+    def clean(self):
+        # try:
+        #     document = self.cleaned_data['document']
+        # except KeyError:
+        #     raise forms.ValidationError(_('Please provide the messages.'), code='invalid')
+
+        return self.cleaned_data
+
+
+
+class DeadlineForm(forms.ModelForm):
+
+    class Meta:
+        model = Deadline
+        fields = ('deadlineType', 'deadline')
+        # widgets = {'deadline': forms.DateInput(attrs={'class':'datepicker'})}
+    # deadlineTypes = (
+    #     ('paperSubmission', 'paperSubmission'),
+    #     ('paperSelection', 'paperSelection'),
+    #     ('paperAssign', 'paperAssign'),
+    #     ('paperReview', 'paperReview'),
+    #     ('paperRate', 'paperRate'),
+    # )
+    #
+    # deadlineType = forms.ChoiceField(choices=deadlineTypes)
+    # deadline = forms.DateTimeField()
+    #
+    # def clean(self):
+    #     # try:
+    #     #     document = self.cleaned_data['document']
+    #     # except KeyError:
+    #     #     raise forms.ValidationError(_('Please provide the messages.'), code='invalid')
+    #
+    #     return self.cleaned_data

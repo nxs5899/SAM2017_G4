@@ -87,9 +87,46 @@ class Paper(models.Model):
         return self.title
 
 
+class NotificationTemp(models.Model):
+    messageTypes = (
+        ('paperSubmitted', 'paperSubmitted'),
+        ('selectpaper', 'selectpaper'),
+        ('assigntoReview', 'assigntoReview'),
+        ('startReview', 'startReview'),
+        ('reviewComplete', 'reviewComplete'),
+        ('paperRate', 'paperRate'),
+    )
+
+    title = models.CharField(max_length=500, choices=messageTypes)
+    message = models.CharField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title + '' + self.message
+
+
+class Deadline(models.Model):
+    deadlineTypes = (
+        ('paperSubmission', 'paperSubmission'),
+        ('paperSelection', 'paperSelection'),
+        ('paperAssign', 'paperAssign'),
+        ('paperReview', 'paperReview'),
+        ('paperRate', 'paperRate'),
+    )
+
+    deadlineType = models.CharField(max_length=500, choices=deadlineTypes)
+    deadline = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.deadlineType + '' + self.deadline
+
+
 class Notification(models.Model):
     title = models.CharField(max_length=500, verbose_name=u"Title")
-    message = models.TextField(verbose_name=u"Message")
+    message = models.CharField(max_length=500)
     viewed = models.BooleanField(default=False, verbose_name=u"Viewd?")
     recipient = models.ManyToManyField(User)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -98,26 +135,28 @@ class Notification(models.Model):
     def __str__(self):
         return self.title + '' + self.message
 
-    notification_message_mapper = {
-        "PaperSubmitted": " Your paper was successfully submitted. Check your notification bar for updates.",
-        "SelectPaper": "Please select papers to review.",
-        "Selection Complete": "Please assign papers to PCMs.",
-        "PaperAssigned": "The papers is assigned to you. Please start your review.",
-        "ReviewComplete": "Reviews are complete. Please check them.",
-        "PaperRate": "Your paper has been rated.",
-    }
-
-    def _constructNotificationMessage(self, message):
-        # paper = Paper.objects.get(pk=paperid)
-        custom_message = message
-        #print("Changes message ??? ", custom_message)
-        return custom_message
+    # notification_message_mapper = {
+    #     "PaperSubmitted": " Your paper was successfully submitted. Check your notification bar for updates.",
+    #     "SelectPaper": "Please select papers to review.",
+    #     "Selection Complete": "Please assign papers to PCMs.",
+    #     "PaperAssigned": "The papers is assigned to you. Please start your review.",
+    #     "ReviewComplete": "Reviews are complete. Please check them.",
+    #     "PaperRate": "Your paper has been rated.",
+    # }
+    #
+    # def _constructNotificationMessage(self, message):
+    #     # paper = Paper.objects.get(pk=paperid)
+    #     custom_message = message
+    #     #print("Changes message ??? ", custom_message)
+    #     return custom_message
 
     def sendNotification(self, type, recipients):
+        newmessage = NotificationTemp.objects.get(title=type)
         notification = self
         notification.title = type
         #print("message " + self.notification_message_mapper[type])
-        notification.message = self._constructNotificationMessage(self.notification_message_mapper[type])
+        notification.message = newmessage
+        #self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()
         notification.recipient.set(recipients)

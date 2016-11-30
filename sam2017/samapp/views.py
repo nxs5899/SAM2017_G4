@@ -193,48 +193,46 @@ def manageaccounts(request):
 
     return render_to_response('manageaccounts.html', context_instance=RequestContext(request, context))
 
-@user_passes_test(is_member2)
-@login_required
-def UpdateUser(request, user_id):
-    user = User.objects.get(pk= user_id)
-
-   # try:
-    #userProfile = UserProfile.objects.get(user = user)
-
-    #except:
-    #user1 = request.user
-    #userProfile1 = UserProfile.objects.get(user = user1)
-    #notification = checkRequest(userProfile1)
-
-    if request.method == 'POST' and 'Save' in request.POST:
-        form = AdminForm(request.POST)
-        if form.is_valid():
-            user.email = form.cleaned_data['email']
-            userProfile.first_Name = form.cleaned_data['first_Name']
-            userProfile.last_Name = form.cleaned_data['last_Name']
-            userProfile.zipCode = form.cleaned_data['zipCode']
-            userProfile.address = form.cleaned_data['address']
-            userProfile.pickupArrangements = form.cleaned_data['pickupArrangements']
-            userProfile.date = form.cleaned_data['date1']
-            user.save()
-            userProfile.save()
-            variables = RequestContext(request, {
-                'form': form
-            })
-            return HttpResponseRedirect('/ManageUsers/')
-    else:
-        form = AdminForm()
-        form.fields['username'].initial = user.username
-        form.fields['email'].initial = user.email
-        form.fields['first_Name'].initial = userProfile.first_Name
-        form.fields['last_Name'].initial = userProfile.last_Name
-        form.fields['zipCode'].initial = userProfile.zipCode
-        form.fields['address'].initial = userProfile.address
-        form.fields['pickupArrangements'].initial = userProfile.pickupArrangements
-        form.fields['date1'].initial = userProfile.date
-    return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
-                                                                                             {'form': form,
-                                                                                              'notification': notification}))
+# @user_passes_test(is_member2)
+# @login_required
+# def UpdateUser(request, user_id):
+#     user = User.objects.get(pk= user_id)
+#
+#    # try:
+#     #userProfile = UserProfile.objects.get(user = user)
+#
+#     #except:
+#     #user1 = request.user
+#     #userProfile1 = UserProfile.objects.get(user = user1)
+#     #notification = checkRequest(userProfile1)
+#
+#     if request.method == 'POST' and 'Save' in request.POST:
+#         form = AdminForm(request.POST)
+#         if form.is_valid():
+#             user.email = form.cleaned_data['email']
+#             userProfile.first_Name = form.cleaned_data['first_Name']
+#             userProfile.last_Name = form.cleaned_data['last_Name']
+#             userProfile.zipCode = form.cleaned_data['zipCode']
+#             userProfile.address = form.cleaned_data['address']
+#             userProfile.pickupArrangements = form.cleaned_data['pickupArrangements']
+#             userProfile.date = form.cleaned_data['date1']
+#             user.save()
+#             userProfile.save()
+#             variables = RequestContext(request, {
+#                 'form': form
+#             })
+#             return HttpResponseRedirect('/ManageUsers/')
+#     else:
+#         form = AdminForm()
+#         form.fields['username'].initial = user.username
+#         form.fields['email'].initial = user.email
+#         form.fields['first_Name'].initial = userProfile.first_Name
+#         form.fields['last_Name'].initial = userProfile.last_Name
+#         form.fields['zipCode'].initial = userProfile.zipCode
+#         form.fields['address'].initial = userProfile.address
+#         form.fields['pickupArrangements'].initial = userProfile.pickupArrangements
+#         form.fields['date1'].initial = userProfile.date
+#     return render_to_response('UpdateUser.html', context_instance=RequestContext(request,{'form': form,'notification': notification}))
 
 
 @login_required
@@ -243,6 +241,52 @@ def home(request):
         'home.html',
         {'user': request.user}
     )
+
+
+@login_required
+def NotifTemp(request):
+    user = request.user
+    if request.method == 'POST' and 'submittemp' in request.POST:
+        form = NotifTemForm(request.POST)
+        if form.is_valid():
+            template = NotificationTemp(
+                                         title=form.cleaned_data['title'],
+                                         message=form.cleaned_data['message'],
+                                       )
+            template.save()
+
+            return HttpResponseRedirect('/notiftemp/')
+
+    else:
+        form = NotifTemForm()
+        variables = RequestContext(request, {'form': form })
+
+    return render_to_response('notiftemp.html', context_instance=RequestContext(request,{'form': form}))
+
+
+@login_required
+def Deadline(request):
+    user = request.user
+    if request.method == 'POST' and 'submitdeadline' in request.POST:
+        form = DeadlineForm(request.POST)
+        if form.is_valid():
+            deadlineType = form.cleaned_data['deadlineType']
+            deadline = (request.POST.get('deadline'))
+            newdeadline = form.save(commit=False)
+            newdeadline.save()
+            # newdeadline = Deadline(
+            #                              deadlineType=form.cleaned_data['deadlineType'],
+            #                              deadline=form.cleaned_data['deadline'],
+            #                            )
+            # newdeadline.save()
+
+            return HttpResponseRedirect('/deadline/')
+
+    else:
+        form = DeadlineForm()
+        variables = RequestContext(request, {'form': form })
+
+    return render_to_response('deadline.html', context_instance=RequestContext(request,{'form': form}))
 
 
 @login_required
@@ -269,11 +313,9 @@ def SubmitPaper(request):
 
     else:
         form = PaperForm()
-        variables = RequestContext(request, {
-        'form': form })
+        variables = RequestContext(request, {'form': form })
 
-    return render_to_response('submitpaper.html', context_instance=RequestContext(request,
-        {'form': form}))
+    return render_to_response('submitpaper.html', context_instance=RequestContext(request,{'form': form}))
 
 
 def successpaper(request):
