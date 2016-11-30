@@ -176,14 +176,14 @@ def manageaccounts(request):
         'PCC': pccusers,
         'PCM': pcmusers
     }
-    if request.method == 'POST' and 'Deactivate' in request.POST:
+    if request.method == 'POST' and 'DeactivatePCC' in request.POST:
         username = request.POST.get('RequestID')
         user2 = User.objects.get(pk=username)
         user2.is_active = False
         user2.save()
         return HttpResponseRedirect('/manageaccounts/')
 
-    elif request.method == 'POST' and 'Activate' in request.POST:
+    elif request.method == 'POST' and 'ActivatePCC' in request.POST:
         username = request.POST.get('RequestID')
         user2 = User.objects.get(pk=username)
         user2.is_active = True
@@ -191,8 +191,24 @@ def manageaccounts(request):
 
         return HttpResponseRedirect('/manageaccounts/')
 
+    elif request.method == 'POST' and 'DeactivatePCM' in request.POST:
+        username = request.POST.get('RequestID1')
+        user3 = User.objects.get(pk=username)
+        user3.is_active = False
+        user3.save()
+
+        return HttpResponseRedirect('/manageaccounts/')
+
+    elif request.method == 'POST' and 'ActivatePCM' in request.POST:
+        username = request.POST.get('RequestID1')
+        user3 = User.objects.get(pk=username)
+        user3.is_active = True
+        user3.save()
+
+        return HttpResponseRedirect('/manageaccounts/')
     return render_to_response('manageaccounts.html', context_instance=RequestContext(request, context))
 
+<<<<<<< HEAD
 # @user_passes_test(is_member2)
 # @login_required
 # def UpdateUser(request, user_id):
@@ -233,6 +249,67 @@ def manageaccounts(request):
 #         form.fields['pickupArrangements'].initial = userProfile.pickupArrangements
 #         form.fields['date1'].initial = userProfile.date
 #     return render_to_response('UpdateUser.html', context_instance=RequestContext(request,{'form': form,'notification': notification}))
+=======
+@user_passes_test(is_member2)
+@login_required
+def UpdatePCC(request, user_id):
+    user = User.objects.get(pk= user_id)
+    userProfile = PCC.objects.get(user = user)
+    user1 = request.user
+    userProfile1 = Samadmin.objects.get(user = user1)
+
+    if request.method == 'POST' and 'Save' in request.POST:
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            userProfile.fname = form.cleaned_data['fname']
+            userProfile.lname = form.cleaned_data['lname']
+            user.save()
+            userProfile.save()
+            variables = RequestContext(request, {
+                'form': form
+            })
+            return HttpResponseRedirect('/manageaccounts/')
+    else:
+        form = UserProfileForm()
+        form.fields['username'].initial = user.username
+        form.fields['email'].initial = user.email
+        form.fields['fname'].initial = userProfile.fname
+        form.fields['lname'].initial = userProfile.lname
+    return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
+                                                                                             {'form': form}))
+
+@user_passes_test(is_member2)
+@login_required
+def UpdatePCM(request, user_id):
+    user = User.objects.get(pk= user_id)
+    userProfile = PCM.objects.get(user = user)
+    user1 = request.user
+    userProfile1 = Samadmin.objects.get(user = user1)
+
+    if request.method == 'POST' and 'Save' in request.POST:
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            user.email = form.cleaned_data['email']
+            userProfile.fname = form.cleaned_data['fname']
+            userProfile.lname = form.cleaned_data['lname']
+            user.save()
+            userProfile.save()
+            variables = RequestContext(request, {
+                'form': form
+            })
+            return HttpResponseRedirect('/manageaccounts/')
+    else:
+        form = UserProfileForm()
+        form.fields['username'].initial = user.username
+        form.fields['email'].initial = user.email
+        form.fields['fname'].initial = userProfile.fname
+        form.fields['lname'].initial = userProfile.lname
+    return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
+                                                                                             {'form': form}))
+
+
+>>>>>>> c5b5fd45c6465b341f6ed5d1dd63d6308941fe2f
 
 
 @login_required

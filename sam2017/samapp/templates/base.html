@@ -1,18 +1,27 @@
+{% load staticfiles %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <title>SAM2017 Login Application |
         {% block title %}{% endblock %}</title>
+<<<<<<< HEAD
 {#    <script src="https://d3js.org/d3.v4.min.js"></script>#}
      {% load staticfiles %}
     <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+=======
+         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+         <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+         <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}"/>
+>>>>>>> c5b5fd45c6465b341f6ed5d1dd63d6308941fe2f
     </head>
     <body>
-        <h1>{% block head %}{% endblock %}</h1>
         {% block content %}{% endblock %}
-
+        <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     </body>
 </html>
 

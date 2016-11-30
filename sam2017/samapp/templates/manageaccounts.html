@@ -1,34 +1,29 @@
-{% block content %}
-
-
-                <b>PCMs and PCC </b>
-            </div>
-        </div>
-        <div > 
-{% if PCM|length == 0 and PCC|length == 0 %}
-<div class="center-align" style="color: #000000;">
-<p>Sorry. There are no existing PCC or PCM accounts </p>
-</div>
-{% else %}
-  <div>
-	<table>
+{% extends "child-base.html" %}
+{% block innercontent %}
+<div class="container">
+    <div class="row">
+        <h1 id="header_margin">Submitted Papers</h1>
+		<b>PCMs and PCC </b>
+			{% if PCM|length == 0 and PCC|length == 0 %}
+			<div class="center-align" style="color: #000000;">
+			<p>Sorry. There are no existing PCC or PCM accounts </p>
+			</div>
+			{% else %}
+			<div>
+	<table class="table table-hover " border="0">
     <thead>
       <tr>
-	  <th>  Username </th>
-	 
+	  		<th>  Username </th>
 			<th> First Name </th>
 			<th> Last Name </th>
 			<th> Status </th>
 			<th> Update </th>
-			<th> Activate/Deactivate </th> 
-			  
-			 </tr>
+			<th> Activate/Deactivate </th>
+	  </tr>
     </thead>
      <tbody>
 	{% for object in PCC %}
-
-		
-			<tr> 
+	<tr class="warning">
         <form method="post" action="/manageaccounts/" enctype="multipart/form-data">{% csrf_token %}  
 		    <p>{% if form.errors %}</p>
 			<p style="text-align: left;">&nbsp;</p>
@@ -38,55 +33,46 @@
 			<td> {{ object.fname }}  </td>
 			<td> {{ object.lname }}  </td>
 			<td> PCC </td>
-			<td> <button class="btn btn-default"> <a href="{% url 'UpdateUser' object.user.id %}">  Update  </a> </button>
-             </td> 
-			 <td>
-			 {% if object.user.is_active = True %}
-			 <input class="btn btn-default" type="submit" value="Deactivate" name="Deactivate"/> 
-				  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
-			{% elif object.user.is_active = False %}
-			 <input class="btn btn-default" type="submit" value="Activate" name="Activate"/> 
-				  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
-			{% endif %}
+			<td> <button class="btn btn-info"> <a href="{% url 'UpdatePCC' object.user.id %}">  Update  </a> </button></td>
+			<td>
+				 {% if object.user.is_active = True %}
+				 <input class="btn btn-default" type="submit" value="Deactivate" name="DeactivatePCC"/>
+					  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
+				{% elif object.user.is_active = False %}
+				 <input class="btn btn-default" type="submit" value="Activate" name="ActivatePCC"/>
+					  <input type="hidden" value={{ object.user.id }} name="RequestID"/>
+				{% endif %}
 			</td> 
 		</tr>	
 		{% endfor %}	
 		
 		
 		{% for objecta in PCM %}
-		<tr>
+		<tr class="warning">
 			<td> {{ objecta.user.username }} </td>	
 			<td> {{ objecta.fname }}  </td>
 			<td> {{ objecta.lname }}  </td>
 			<td> PCM </td>
-			<td>  <button class="btn btn-default"> <a href="{% url 'UpdateUser' objecta.user.id %}">  Update  </a> </button>
-             </td> 
-			 <td>
-			 {% if objecta.user.is_active = True %}
-			 <input class="btn btn-default" type="submit" value="Deactivate" name="Deactivate"/> 
-				  <input type="hidden" value={{ objecta.user.id }} name="RequestID"/>
-			{% elif objecta.user.is_active = False %}
-			 <input class="btn btn-default" type="submit" value="Activate" name="Activate"/> 
-				  <input type="hidden" value={{ objecta.user.id }} name="RequestID"/>
-			{% endif %}
+			<td>  <button class="btn btn-info"> <a href="{% url 'UpdatePCM' objecta.user.id %}">  Update  </a> </button></td>
+			<td>
+				 {% if objecta.user.is_active = True %}
+				 <input class="btn btn-default" type="submit" value="Deactivate" name="DeactivatePCM"/>
+					  <input type="hidden" value={{ objecta.user.id }} name="RequestID1"/>
+				{% elif objecta.user.is_active = False %}
+				 <input class="btn btn-default" type="submit" value="Activate" name="ActivatePCM"/>
+					  <input type="hidden" value={{ objecta.user.id }} name="RequestID1"/>
+				{% endif %}
 			</td> 
-	
-		
-		 </tr>
+		</tr>
 		{% endfor %}	
-        
-		</form>		 
-		
-		
-		
-	
-	
-</tbody>
+	 </form>
+	 </tbody>
 	</table>
   </div>
 {% endif %}
-	
+</div>
+</div>
 
-{% endblock %}
+{% endblock innercontent %}
 
 	

@@ -84,6 +84,13 @@ class AdminForm(forms.Form):
     def getPassword(self):
         return self.password1
 
+class UserProfileForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs=dict(max_length=30)), label=_("Email address"))
+    fname = forms.CharField(max_length=25)
+    lname = forms.CharField(max_length=25)
+
+
 class PaperForm(forms.Form):
     formatChoices = (
         ('PDF', 'PDF'),
