@@ -44,5 +44,7 @@ urlpatterns = patterns('',
                        # url(r'^(?P<user_id>[0-9]+)/UpdateUser/$', UpdateUser, name='UpdateUser'),
                        url(r'^(?P<user_id>[0-9]+)/UpdatePCC/$', UpdatePCC, name='UpdatePCC'),
                        url(r'^(?P<user_id>[0-9]+)/UpdatePCM/$', UpdatePCM, name='UpdatePCM'),
-
+					   url(r'^(?P<paper_id>[0-9]+)/PCM_review/$', review_Rate_PCM, name='ReviewPCM'),
+					   url(r'^(?P<paper_id>[0-9]+)/PCCreview/$', review_PCC, name='ReviewPCC'),
+                       
                        )
