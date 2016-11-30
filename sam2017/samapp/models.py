@@ -83,12 +83,15 @@ class Paper(models.Model):
     class Meta:
         ordering = ["-title"]
 
+    def ratePaper(self, rate):
+        self.rate = rate
+
+        self.save()
+
     def __str__(self):
         return self.title
 		
-	def ratePaper(self,rate):
-        self.rate=rate
-        self.save()
+
 
 
 class NotificationTemp(models.Model):
