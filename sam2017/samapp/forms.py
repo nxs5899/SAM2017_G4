@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
-from .models import Author, Deadline
+from .models import Author, Deadline,Paper,Review
 
 
 class AuthorForm(forms.Form):
@@ -117,8 +117,9 @@ class PaperForm(forms.Form):
             raise forms.ValidationError(_("Please upload a pdf or word document."))
         return self.cleaned_data
 
-
-
+class PccForm(forms.Form):
+    rate = forms.CharField(max_length=25)
+	
 class NotifTemForm(forms.Form):
     messageTypes = (
         ('paperSubmitted', 'paperSubmitted'),

@@ -36,8 +36,10 @@
                 <td><p>{{object.title}}</p></td>
                 <td><p>{{object.version}}</p></td>
 				<td><p>{{object.formats}}</p></td>
-            </tr>
-        </tbody>
+                <td><p> <a href="{% url 'ReviewPCM' object.id %}"> Rate Paper </a> </p></td>
+			
+    
+	</tr>
 	{% endfor %}
 </div>
 </div>

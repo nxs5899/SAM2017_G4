@@ -419,9 +419,19 @@ def pcmpapers(request):
     context = {
         'paper': paper_info,
     }
+    # added by smruthi for rate function====start
+    print(request.method)
+
+    if request.method=='POST':#request.POST.get('Rate'):
+        print('in pcmpapers')
+        context['title']=request.POST.get('Rate')
+        return render_to_response('PCM_review.html', context)
+    else:
 
 
-    return render_to_response('pcmpapers.html',context)
+        return render_to_response('pcmpapers.html',context)
+    #
+    # added by smruthi for rate function====end
 
 def is_member1(user):
     return user.groups.filter(name='PCC').exists()
@@ -429,6 +439,7 @@ def is_member1(user):
 @user_passes_test(is_member1)
 @login_required
 def pccpapers(request):
+    context=RequestContext(request)
     paper_info=Paper.objects.all()
     paper_data={
         'paper_detail':paper_info
@@ -472,18 +483,18 @@ def show_notification(request):
     return render(request, 'view-notifications.html',{'notifications':notifications,'user':user})
 
 @login_required
-def review_Rate_PCM(request):
+def review_Rate_PCM(request, paper_id):
     '''
     pCM rate
     :param request:
     :return:
     '''
-
+    doc = Paper.objects.get(pk = paper_id)
     context=RequestContext(request)
     reviewer = Review.objects.all()#(reviewer=reviewer,paperId=paper)# change to current user
-    paper_info = Paper.objects.get(pk=1)# fetch paper id from pcm page
+    paper_info = Paper.objects.get(pk=doc.id)# fetch paper id from pcm page
 
-    context=RequestContext(request)
+
 
 
     # if the method is POST and rating has to be saved
@@ -494,13 +505,76 @@ def review_Rate_PCM(request):
         grade=request.POST.get('rating')
         print(grade)
         comments=request.POST.get('comments')
-        review1=Review.create(paper_info,grade,comments)
+        print("user id is",(request.user))
+        pcm=PCM.objects.get(user=request.user)
+        print("user id is", (pcm))
+        review1=Review.create(paper_info,grade,comments,pcm)
 
-        return render_to_response('PCM_review.html', context_instance=RequestContext(request))
-        # return render_to_response('pcmpapers.html', context)
+        # return render_to_response('PCM_review.html', context_instance=RequestContext(request))
+        return render_to_response('Home.html', context)
         # return pcmpapers(request)
 
     else:
         context['title']=paper_info
         return render_to_response('PCM_review.html', context)
 
+
+
+@user_passes_test(is_member1)
+@login_required
+def review_PCC(request, paper_id):
+
+    doc = Paper.objects.get(pk=paper_id)
+    context = RequestContext(request)
+    # reviewer = Review.objects.all()  # (reviewer=reviewer,paperId=paper)# change to current user
+    #paper_info = Paper.objects.get(pk=doc.id)  # fetch paper id from pcm page
+
+
+    review = Review.objects.get(id=doc.id)
+    print(review.grade)
+
+
+    # for object in review:
+    #
+    #     if object.paperId==doc:
+    #         print('inside if',doc,object)
+    #         print(object.reviewer)
+    #         context = {
+    #             'paper': doc,
+    #             'Review': review
+    #         }
+
+
+    print(request.method)
+
+    if request.method == 'POST' and 'Rate' in request.POST:
+        print('inside post')
+        #newform = PccForm(request.POST)
+        form = PccForm(request.POST)
+        if form.is_valid():
+            rate = form.cleaned_data['rate']
+        # commentpcc=request.comment
+            doc.rate = rate
+            doc.save()
+        print('saved')
+       # context = {
+
+        #        'paper': paper_info,
+
+         #       'Review': review
+        #}
+
+        return HttpResponseRedirect('/pccpapers')
+
+    elif request.method =='POST' and 'Conflict' in request.POST:
+        review1=Review.objects.get(id=review.id)
+        review1.grade=0
+        review1.save()
+        return render_to_response('/pccpapers')
+    else:
+        form = PccForm()
+       # print(newform)
+
+
+
+    return render_to_response('PCCreview.html',context_instance=RequestContext(request,{'form':form}))

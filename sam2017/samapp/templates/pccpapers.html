@@ -32,10 +32,12 @@
                 <td><p>{{object.title}}</p></td>
                 <td><p>{{object.version}}</p></td>
 				<td><p>{{object.formats}}</p></td>
-				<td><p>{{object.document}}</p></td>
-            </tr>
-            </tbody>
-</div>
-</div>
+
+			    <td><p> <a  href="{% url 'ReviewPCC' object.id %}"> Rate Paper </a> </p></td>
+
+    
+	</tr>
+            </table>
+    </form>
     {% endfor %}
 	{% endblock innercontent %}

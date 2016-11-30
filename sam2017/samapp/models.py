@@ -85,6 +85,10 @@ class Paper(models.Model):
 
     def __str__(self):
         return self.title
+		
+	def ratePaper(self,rate):
+        self.rate=rate
+        self.save()
 
 
 class NotificationTemp(models.Model):
@@ -179,8 +183,8 @@ class Review(models.Model):
         return str(self.pk)
 
     @classmethod
-    def create(cls,paperId,grade,comments):
-        reviewPaper=cls(paperId=paperId,grade=grade,comments=comments)
+    def create(cls,paperId,grade,comments,reviewer):
+        reviewPaper=cls(paperId=paperId,grade=grade,comments=comments,reviewer=reviewer)
 
         reviewPaper.save()
         return reviewPaper
