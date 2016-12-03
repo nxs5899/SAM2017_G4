@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "child-base.html" %}
 {% block title %}
     <h1 class="center-align">
         <span style = "color:#000000;"> Notification Template</span>
@@ -8,10 +8,10 @@
         </div>
 {% endblock %}
 
-{% block content %}
+{% block innercontent %}
 
 <form method="post" action="/notiftemp/"> {% csrf_token %}
-        <table border="0">
+        <table class="table table-hover" id="table_change"  border="0" >
             {{ form.as_table }}
 			
         </table>
@@ -20,4 +20,4 @@
         </div>
 </form>
 
-{% endblock %}
+{% endblock innercontent%}

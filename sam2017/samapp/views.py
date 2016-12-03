@@ -13,7 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from sam2017.settings import MEDIA_ROOT
 from django.contrib.auth.models import User, Group
-
+from datetime import datetime
+import pytz
+from django.utils import timezone
 
 @csrf_protect
 def register(request):
@@ -277,6 +279,13 @@ def home(request):
         {'user': request.user}
     )
 
+@login_required
+def Deadline_Error(request):
+    return render_to_response(
+        'Deadline_Error.html',
+        {'user': request.user}
+    )
+
 
 @login_required
 def NotifTemp(request):
@@ -300,7 +309,7 @@ def NotifTemp(request):
 
 
 @login_required
-def Deadline(request):
+def Deadlines(request):
     user = request.user
     if request.method == 'POST' and 'submitdeadline' in request.POST:
         form = DeadlineForm(request.POST)
@@ -328,10 +337,13 @@ def Deadline(request):
 def SubmitPaper(request):
     user = request.user
     author = Author.objects.get(user=user)
+    utc=pytz.UTC
+
     # current_pcc = User.objects.filter(groups__name='PCC')
     if request.method == 'POST' and 'submitpaper' in request.POST:
         form = PaperForm(request.POST, request.FILES)
         if form.is_valid():
+
             paper = Paper(contact_author = author,
                                          title=form.cleaned_data['title'],
                                          submitter=form.cleaned_data['submitter'],
@@ -339,12 +351,21 @@ def SubmitPaper(request):
                                          formats=form.cleaned_data['formats'],
                                          document=form.cleaned_data['document']
                                          )
-            paper.save()
-            notification = Notification()
-            recipients = [user]
-            notification.sendNotification("PaperSubmitted", recipients)
+            # check if the deadline for papersubmission--To-Do
+            deadlines =Deadline.objects.filter(deadlineType='paperSubmission')
+            deadline_val=deadlines[0]
+            submissiondate=utc.localize(datetime.now())
+            # print('if ',str(submissiondate) > str(deadline_val))
+            if submissiondate < deadline_val.deadline:
 
-            return HttpResponseRedirect('/SubmittedPapers/')
+                paper.save()
+                notification = Notification()
+                recipients = [user]
+                notification.sendNotification("paperSubmitted", recipients)
+
+                return HttpResponseRedirect('/SubmittedPapers/')
+            else:
+                return HttpResponseRedirect('/Deadline_Error/')
 
     else:
         form = PaperForm()
@@ -413,25 +434,28 @@ def is_member(user):
 @login_required
 def pcmpapers(request):
     paper_info=Paper.objects.all()
+
     paper_data={
         'paper_detail':paper_info
     }
     context = {
         'paper': paper_info,
     }
-    # added by smruthi for rate function====start
-    print(request.method)
+
+
 
     if request.method=='POST':#request.POST.get('Rate'):
         print('in pcmpapers')
+
         context['title']=request.POST.get('Rate')
         return render_to_response('PCM_review.html', context)
+
     else:
 
 
         return render_to_response('pcmpapers.html',context)
     #
-    # added by smruthi for rate function====end
+
 
 def is_member1(user):
     return user.groups.filter(name='PCC').exists()
@@ -493,25 +517,31 @@ def review_Rate_PCM(request, paper_id):
     context=RequestContext(request)
     reviewer = Review.objects.all()#(reviewer=reviewer,paperId=paper)# change to current user
     paper_info = Paper.objects.get(pk=doc.id)# fetch paper id from pcm page
-
-
-
+    utc = pytz.UTC
+    deadlines = Deadline.objects.filter(deadlineType='paperReview')
+    deadline_val = deadlines[0]
+    currentDate = utc.localize(datetime.now())
 
     # if the method is POST and rating has to be saved
     if request.method=='POST' or '/PCM_review/' in request.POST:
         print('inside POst')
+        print('deadline', currentDate , deadline_val.deadline)
+        if currentDate<deadline_val.deadline:
 
-        # reviewer.paperId=paprer_info#request.POST.get('title')
-        grade=request.POST.get('rating')
-        print(grade)
-        comments=request.POST.get('comments')
-        print("user id is",(request.user))
-        pcm=PCM.objects.get(user=request.user)
-        print("user id is", (pcm))
-        review1=Review.create(paper_info,grade,comments,pcm)
 
-        # return render_to_response('PCM_review.html', context_instance=RequestContext(request))
-        return render_to_response('Home.html', context)
+            # reviewer.paperId=paprer_info#request.POST.get('title')
+            grade=request.POST.get('rating')
+            print(grade)
+            comments=request.POST.get('comments')
+            print("user id is",(request.user))
+            pcm=PCM.objects.get(user=request.user)
+            print("user id is", (pcm))
+            review1=Review.create(paper_info,grade,comments,pcm)
+
+            # return render_to_response('PCM_review.html', context_instance=RequestContext(request))
+            return render_to_response('Home.html', context)
+        else:
+            return HttpResponseRedirect('/Deadline_Error/')
         # return pcmpapers(request)
 
     else:
@@ -523,7 +553,7 @@ def review_Rate_PCM(request, paper_id):
 @user_passes_test(is_member1)
 @login_required
 def review_PCC(request, paper_id):
-
+    utc = pytz.UTC
     doc = Paper.objects.get(pk=paper_id)
     context = RequestContext(request)
     # reviewer = Review.objects.all()  # (reviewer=reviewer,paperId=paper)# change to current user
@@ -546,35 +576,37 @@ def review_PCC(request, paper_id):
 
 
     print(request.method)
-
+    deadlines = Deadline.objects.filter(deadlineType='paperRate')
+    deadline_val = deadlines[0]
+    currentDate = utc.localize(datetime.now())
+    print('deadline', currentDate, deadline_val.deadline)
     if request.method == 'POST' and 'Rate' in request.POST:
-        print('inside post')
-        #newform = PccForm(request.POST)
-        form = PccForm(request.POST)
-        if form.is_valid():
-            rate = form.cleaned_data['rate']
-        # commentpcc=request.comment
-            doc.rate = rate
-            doc.save()
-        print('saved')
-       # context = {
 
-        #        'paper': paper_info,
 
-         #       'Review': review
-        #}
+        if currentDate<deadline_val.deadline:
 
-        return HttpResponseRedirect('/pccpapers')
+
+            form = PccForm(request.POST)
+            if form.is_valid():
+                rate = form.cleaned_data['rate']
+
+                doc.rate = rate
+                doc.save()
+
+
+            return HttpResponseRedirect('/pccpapers')
+        else:
+            return HttpResponseRedirect('/Deadline_Error/')
 
     elif request.method =='POST' and 'Conflict' in request.POST:
-        review1=Review.objects.get(id=review.id)
-        review1.grade=0
-        review1.save()
-        return render_to_response('/pccpapers')
+        if currentDate < deadline_val.deadline:
+            review1=Review.objects.get(id=review.id)
+            review1.grade=0
+            review1.save()
+            return HttpResponseRedirect('/pccpapers/')
+        else:
+            return HttpResponseRedirect('/Deadline_Error/')
     else:
         form = PccForm()
-       # print(newform)
-
-
 
     return render_to_response('PCCreview.html',context_instance=RequestContext(request,{'form':form}))

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Register your models here.
 
 
-from .models import Author, Paper, Review, Samadmin, PCC, PCM
+from .models import Author, Paper, Review, Samadmin, PCC, PCM,Deadline,Notification,NotificationTemp
 from .forms import AuthorForm, PaperForm
 
 
@@ -23,3 +23,6 @@ admin.site.register(Review)
 admin.site.register(Samadmin)
 admin.site.register(PCC)
 admin.site.register(PCM)
+admin.site.register(Deadline)
+admin.site.register(Notification)
+admin.site.register(NotificationTemp)

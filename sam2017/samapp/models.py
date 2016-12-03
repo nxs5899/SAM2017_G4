@@ -128,7 +128,7 @@ class Deadline(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.deadlineType + '' + self.deadline
+        return str(self.deadline)
 
 
 class Notification(models.Model):
@@ -162,7 +162,7 @@ class Notification(models.Model):
         notification = self
         notification.title = type
         #print("message " + self.notification_message_mapper[type])
-        notification.message = newmessage
+        notification.message = newmessage.message# added .message to save the message
         #self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()

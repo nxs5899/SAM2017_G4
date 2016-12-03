@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "child-base.html" %}
 
 {% block title %}
     <h1 class="center-align">
@@ -9,16 +9,15 @@
 </div>
 {% endblock %}
 
-{% block content %}
-
-<p></p>
-
-
-<strong>PCM Rating</strong>
-
+{% block innercontent %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 id="header_margin">PCM Rating</h1>
 <form method="POST"  enctype="multipart/form-data">
     {% csrf_token %}
-    <table class="center-align-table" border="2">
+    <table class="table table-bordered table-hover" id="table_change"  border="0">
+        <thead>
          <tr>
              <th>Title
 
@@ -26,6 +25,8 @@
 
              </th>
         </tr>
+         </thead>
+        <tbody>
              <tr>
 
                 <th>Paper</th>
@@ -33,48 +34,28 @@
                 <!--<td><a href="{{paper.url}}"> Paper </a> </td>-->
          </tr>
                 <tr><th>Rating</th>
-                    <td><p><input type="radio" name="rating" value="1">1
-                    <input type="radio" name="rating" value="2">2
-                    <input type="radio" name="rating" value="3">3
-                    <input type="radio" name="rating" value="4">4
-                    <input type="radio" name="rating" value="5">5</p></td>
-
+                    <td><input type="radio" name="rating" value="1"> 1<br/>
+                    <input type="radio" name="rating" value="2"> 2<br/>
+                    <input type="radio" name="rating" value="3"> 3<br/>
+                    <input type="radio" name="rating" value="4"> 4<br/>
+                    <input type="radio" name="rating" value="5"> 5
+                    </td>
                 </tr>
                 <tr><th>Comment</th>
-                 <td><p><textarea name="comments"></textarea></p></td></tr>
+                 <td><p><textarea id="id_comment" name="comments"></textarea></p></td></tr>
                 <tr><th>Action</th>
-                <td><input class="button-below-table" type="submit" value="Save" name="Rate"/>
+                <td><input class="btn btn-info" type="submit" value="Save" name="Rate"/>
                 </tr>
-            </tr>
-
-
-
-                <tr>
-
-
-                </tr>
-
-                   <tr>
-
-                   </tr>
-                    <tr>
-
-                    </tr>
-
-
-
-
-
-
-
-
+        </tbody>
     </table>
 
 
 
 
 </form>
-</p>
+</div>
+</div>
+</div>
 
 <!--<p><input class="button-below-table" type="submit" value="Submit Review" name="Review"/></p>-->
 <!-- {% for object in toolsRegister %}
@@ -91,4 +72,4 @@
 
     <!--&lt;!&ndash;<a href="/home">Home</a>&ndash;&gt;<p></p>-->
 
-{% endblock %}
+{% endblock innercontent%}
