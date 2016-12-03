@@ -1,0 +1,34 @@
+{% extends "child-base.html" %}
+
+{% block title %}
+<h1 class="center-align">
+    <span class="center-align" style = "color:#000000;">PCC Ratings</span>
+</h1>
+<div align="right">
+
+</div>
+{% endblock %}
+
+{% block innercontent %}
+
+<div class="container">
+<div class="row">
+<h1 id="header_margin">View Papers</h1>
+<form method="POST" id="form"  enctype="multipart/form-data">
+    {% csrf_token %}
+   <table class="table table-hover" id="table_change"  border="0">
+
+            {{ form.as_table }}
+
+   </table>
+    <div class="center-align">
+        <input class="btn btn-info" type="submit" value="Rate" name="Rate"/>
+        <input class="btn btn-default" type="submit" value="Conflict" name="Conflict"/>
+
+        </div>
+
+
+</form>
+</div>
+</div>
+{% endblock innercontent %}

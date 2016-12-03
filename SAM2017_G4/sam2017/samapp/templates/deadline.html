@@ -1,0 +1,53 @@
+{% extends "child-base.html" %}
+{% block title %}
+    <h1 class="center-align">
+        <span style = "color:#000000;"> Deadline Template</span>
+    </h1>
+    <div align="right">
+             <a href="/home">Go back to home</a></p>
+    </div>
+{% endblock %}
+
+{% block innercontent %}
+    <script>
+        $( function() {
+            $( "#id_deadline" ).datepicker({
+                changeMonth: true,
+                changeYear: true,
+            });
+        } );
+    </script>
+
+<form method="post" action="/deadline/"> {% csrf_token %}
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>Set Deadlines</legend>
+
+        <table class="table table-hover" border="0" id="table_change" >
+            {{ form.as_table }}
+
+        </table>
+
+{#    <div class="form-group">#}
+{#        <label class="col-md-4 control-label" for="deadlinetype">Deadline Type</label>#}
+{#        <div class="col-md-4">#}
+{#            <input id="deadlinetype" value="" name="deadlinetype" type="text" class="form-control input-md" required>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="form-group">#}
+{#        <label class="col-md-4 control-label" for="deadline_date">Deadline Dates</label>#}
+{#        <div class="col-md-4">#}
+{#            <input id="deadline_date" value="" name="deadline_date" type="text" placeholder="mm/dd/yyyy" class="form-control input-md" readonly required style="cursor:pointer; background-color: #FFFFFF">#}
+{#            Must be future Dates#}
+{#        </div>#}
+{#    </div>#}
+{##}
+
+		<div class="center-align">
+             <input class="button-below-table" type="submit" value="Submit" name="submitdeadline"/></p>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock innercontent%}
