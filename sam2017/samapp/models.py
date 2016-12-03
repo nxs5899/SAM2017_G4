@@ -162,7 +162,7 @@ class Notification(models.Model):
         notification = self
         notification.title = type
         #print("message " + self.notification_message_mapper[type])
-        notification.message = newmessage
+        notification.message = newmessage.message
         #self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()
