@@ -162,11 +162,7 @@ class Notification(models.Model):
         notification = self
         notification.title = type
         #print("message " + self.notification_message_mapper[type])
-<<<<<<< HEAD:sam2017/samapp/models.py
-        notification.message = newmessage.message
-=======
         notification.message = newmessage.message# added .message to save the message
->>>>>>> 144ab38a0162e2515326a330186a98a41c546088:SAM2017_G4/sam2017/samapp/models.py
         #self._constructNotificationMessage(self.notification_message_mapper[type])
         #print("constructed message " + notification.message)
         notification.save()
