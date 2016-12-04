@@ -22,6 +22,7 @@
             <th>Format</th>
             <th>Paper</th>
 			<th>Rate</th>
+			<th> Assign </th>
 		</tr>
         </thead>
 
@@ -36,7 +37,13 @@
 				<td><p>{{object.formats}}</p></td>
                 <td> <a href="{% url 'downloadPDF' object.id %}" width="100" target="_blank"/> Paper </a></td>
 			    <td><p> <a  href="{% url 'ReviewPCC' object.id %}"> Rate Paper </a> </p></td>
-
+				<td> {% if object.assigned == False %}
+					<button class="btn btn-default"> <a href="{% url 'assignpapers' object.id %}">  Assign  </a> </button>
+					{% else %}
+				
+					<p> Assigned </p> 
+					{% endif %}
+				</td>
     
 	</tr>
             {% endfor %}
