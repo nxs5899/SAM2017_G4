@@ -16,6 +16,7 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 import pytz
 from django.utils import timezone
+from django.db.models import Q
 
 @csrf_protect
 def register(request):
@@ -269,7 +270,23 @@ def UpdatePCM(request, user_id):
     return render_to_response('UpdateUser.html', context_instance=RequestContext(request,
                                                                                              {'form': form}))
 
+@login_required
+def assignments(request):
+    user = PCM.objects.get(user=request.user)
+    paper = Paper.objects.filter(Q(pcm1 = user)| Q(pcm2 = user) | Q(pcm3=user))
 
+    context = {
+        'paper': paper
+    }
+    return render_to_response('assignments.html',context)
+
+@login_required
+def selections(request):
+    paper = Selection.objects.all()
+    context = {
+        'paper': paper
+    }
+    return render_to_response('selections.html',context)
 
 
 @login_required
@@ -430,35 +447,51 @@ def submittedpapers(request):
 def is_member(user):
     return user.groups.filter(name='PCM').exists()
 
+def is_member1(user):
+    return user.groups.filter(name='PCC').exists()
+
+def paperselected(request):
+    return render_to_response('paperselected.html')
+
 @user_passes_test(is_member)
 @login_required
 def pcmpapers(request):
+    user = request.user
+    pcm = PCM.objects.get(user=user)
     paper_info=Paper.objects.all()
 
     paper_data={
         'paper_detail':paper_info
     }
     context = {
+        'pcm': pcm,
         'paper': paper_info,
     }
 
 
-
     if request.method=='POST':#request.POST.get('Rate'):
-        print('in pcmpapers')
+        paper = request.POST.get('RequestID')
+        paper1 = Paper.objects.get(pk=paper)
+        selectionlist = Selection.objects.all().filter(PCM=pcm, selected_papers=paper1)
+        context['slist'] = selectionlist
+        if selectionlist:
+            return HttpResponseRedirect('/paperselected/')
 
-        context['title']=request.POST.get('Rate')
-        return render_to_response('PCM_review.html', context)
+        elif not selectionlist and 'Selected' in request.POST:
+            selection = Selection.create(pcm, paper1)
+            return HttpResponseRedirect('/pcmpapers/')
+
 
     else:
+        variables = RequestContext(request)
+
+        return render_to_response('pcmpapers.html', context, variables)
+
+    return render_to_response('pcmpapers.html', context)
 
 
-        return render_to_response('pcmpapers.html',context)
-    #
 
 
-def is_member1(user):
-    return user.groups.filter(name='PCC').exists()
 
 @user_passes_test(is_member1)
 @login_required
@@ -474,6 +507,49 @@ def pccpapers(request):
 
 
     return render_to_response('pccpapers.html',context)
+
+@user_passes_test(is_member1)
+@csrf_protect
+@login_required
+def assignpapers(request, paper_id):
+    doc = Paper.objects.get(pk = paper_id)
+    pcms = PCM.objects.all()
+    selection = Selection.objects.all()
+    context = {
+        'selection': selection,
+        'pcm': pcms,
+        'paper': doc
+    }
+
+    if request.method == 'POST' and 'Assigned' in request.POST:
+        pcm1 = request.POST.get('PCMa')
+        pcm1_a = PCM.objects.get(pk=pcm1)
+        pcm2 = request.POST.get('PCMb')
+        pcm2_a = PCM.objects.get(pk=pcm2)
+        pcm3 = request.POST.get('PCMa')
+        pcm3_a = PCM.objects.get(pk=pcm3)
+
+        if pcm1 != pcm2 !=pcm3:
+
+            doc.pcm1 = pcm1_a
+            doc.pcm2 = pcm2_a
+            doc.pcm3 = pcm3_a
+            doc.assigned = True
+
+            doc.save()
+            return HttpResponseRedirect('../../pccpapers/')
+
+        elif pcm1 == pcm2 or pcm2 == pcm3 or pcm1 == pcm3:
+            return HttpResponseRedirect('../../failassignment/')
+
+
+    return render_to_response('assignpapers.html', context_instance=RequestContext(request, context))
+
+def successassignment(request):
+    return render_to_response('successassignment.html')
+
+def failassignment(request):
+    return render_to_response('failassignment.html')
 
 @login_required
 def downloadPDF(request, paper_id):

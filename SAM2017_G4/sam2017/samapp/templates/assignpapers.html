@@ -1,0 +1,54 @@
+{% extends 'child-base.html' %}
+
+{% block title %}
+    <h1 class="center-align">
+        <span class="center-align" style = "color:#000000;">Your Submitted Papers</span>
+    </h1>
+    <div align="right">
+    <span align="right"><a href="/home">Go back to home</a></span>
+</div>
+{% endblock %}
+
+{% block innercontent %}
+
+{% with b=0 %}
+{% endwith %}
+
+<div class="container">
+<div class="row">
+<h1 id="header_margin">Assign Paper {{paper.title}} </h1>
+    
+		<form method = "post" action=".">  {% csrf_token %} 
+		 
+         
+			
+                <p>	<select name="PCMa"> 
+				{% for object in pcm %}
+					<option value ="{{object.id}}"> {{object.fname}} </option></td>
+				{% endfor %}
+				</select>
+				
+				<select name="PCMb"> 
+				{% for object in pcm %}
+					<option value ="{{object.id}}"> {{object.fname}} </option></td>
+				{% endfor %}
+				</select>
+				
+				<select name="PCMb"> 
+				{% for object in pcm %}
+					<option value ="{{object.id}}"> {{object.fname}} </option></td>
+				{% endfor %}
+				</select>
+				
+					
+			<button class="btn btn-default" name='Assigned'> Save </button> 
+					
+				 
+		
+			</form>
+	
+</div>
+</div>
+    <!--<a href="/home">Home</a>--><p></p>
+
+{% endblock innercontent %}

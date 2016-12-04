@@ -46,6 +46,11 @@ urlpatterns = patterns('',
                        url(r'^(?P<user_id>[0-9]+)/UpdatePCM/$', UpdatePCM, name='UpdatePCM'),
 					   url(r'^(?P<paper_id>[0-9]+)/PCM_review/$', review_Rate_PCM, name='ReviewPCM'),
 					   url(r'^(?P<paper_id>[0-9]+)/PCCreview/$', review_PCC, name='ReviewPCC'),
-                        url(r'^Deadline_Error/$', Deadline_Error),
-                       
+                       url(r'^Deadline_Error/$', Deadline_Error),
+                       url(r'^(?P<paper_id>[0-9]+)/assignpapers/$', assignpapers, name='assignpapers'),
+                       url(r'^successassignment/$', successassignment),
+                       url(r'^failassignment/$', failassignment),
+                       url(r'^assignments/$', assignments),
+                       url(r'^selections/$', selections),
+                       url(r'^paperselected/$', paperselected),
                        )

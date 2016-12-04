@@ -79,6 +79,10 @@ class Paper(models.Model):
     rate = models.FloatField(default=None, null=True)
     sub_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    pcm1 = models.ForeignKey(PCM, null=True, related_name="pcm1")
+    pcm2 = models.ForeignKey(PCM, null=True, related_name="pcm2")
+    pcm3 = models.ForeignKey(PCM, null=True, related_name="pcm3")
+    assigned = models.NullBooleanField(default=False)
 
     class Meta:
         ordering = ["-title"]
@@ -192,5 +196,18 @@ class Review(models.Model):
         reviewPaper.save()
         return reviewPaper
 
+class Selection(models.Model):
+    PCM = models.ForeignKey(PCM)
+    selected_papers = models.ForeignKey(Paper)
+
+    def __str__(self):
+        return self.PCM.fname + " " + self.PCM.lname + " " + self.selected_papers.title
+
+    @classmethod
+    def create(cls, PCM, selected_papers):
+        selection = cls(PCM=PCM, selected_papers=selected_papers)
+
+        selection.save()
+        return selection
 
 

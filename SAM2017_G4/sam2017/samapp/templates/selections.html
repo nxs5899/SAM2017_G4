@@ -1,0 +1,57 @@
+{% extends "child-base.html" %}
+
+{% block title %}
+    <h1 class="center-align">
+        <span class="center-align" style = "color:#000000;">Your Submitted Papers</span>
+    </h1>
+    <div align="right">
+    <span align="right"><a href="/home">Go back to home</a></span>
+</div>
+{% endblock %}
+
+{% block innercontent %}
+
+<div class="container">
+    <div class="row">
+        <h1 id="header_margin">Submitted Papers</h1>
+        {% with b=0 %}
+        {% endwith %}
+		{% if paper|length == 0 %}
+		
+		<p> No PCM has selected any papers yet </p>
+		
+		{% else %}
+        <table class="table table-striped table-hover " border="0">
+            <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Version</th>
+                    <th>Format</th>
+                    <th>Selected</th>
+                </tr>
+             </thead>
+            {% for object in paper %}
+               
+                {% with b=1 %}
+                {% endwith %}
+            <tbody>
+                <tr class="warning">
+                    <td><p>{{object.selected_papers.submitter}}</p></td>
+                    <td><p>{{object.selected_papers.title}}</p></td>
+                    <td><p>{{object.selected_papers.version}}</p></td>
+                    <td><p>{{object.selected_papers.formats}}</p></td>
+                    <td><p> {{object.PCM.fname}} {{object.PCM.lname}}</p></td>
+                </tr>
+            </tbody>
+        
+            {% endfor %}
+			{% endif %}
+    
+            <p>{{message}}</p>
+       
+            <!--<a href="/home">Home</a>-->
+    </div>
+</div>
+
+{% endblock innercontent %}
