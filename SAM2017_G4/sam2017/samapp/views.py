@@ -420,38 +420,18 @@ def submittedpapers(request):
         # Need to have some functionality for this
     return render_to_response('SubmittedPapers.html',context)
 
-@login_required
-def submittedpapers(request):
-    author = Author.objects.get(user=request.user)
-    paper_info=Paper.objects.all()
-    paper_data={
-        'paper_detail':paper_info
-    }
-    try:
-        context = {'authorId':author.id}
-        papers = Paper.objects.all()
-        for object in papers:
-            if object.contact_author_id == author.id:
-                print (object.submitter)
-                print(object.title)
-                print(object.version)
-                print(object.formats)
-                print(object.document)
-                context['papers'] = papers
-
-    except ObjectDoesNotExist:
-        print("")
-        # Need to have some functionality for this
-    return render_to_response('SubmittedPapers.html',context)
 
 def is_member(user):
     return user.groups.filter(name='PCM').exists()
 
+
 def is_member1(user):
     return user.groups.filter(name='PCC').exists()
 
+
 def paperselected(request):
     return render_to_response('paperselected.html')
+
 
 @user_passes_test(is_member)
 @login_required
