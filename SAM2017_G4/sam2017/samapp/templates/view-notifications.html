@@ -4,7 +4,7 @@
 
 {% block innercontent %}
 {#    {% if user.is_authenticated %}#}
-{#        {% if notifications %}#}
+        {% if notifications %}
             <ol>
             {% for notification in notifications %}
                 <li>
@@ -15,9 +15,9 @@
                 </li>
             {% endfor %}
             </ol>
-{#        {% else %}#}
-{#            <p> You have no notifications</p>#}
-{#        {% endif %}#}
+        {% else %}
+            <h2> You have no notifications at the Moment</h2>
+        {% endif %}
 {#    {% else %}#}
 {#        <p>Please login to view your notifications</p>#}
 {#    {% endif %}#}

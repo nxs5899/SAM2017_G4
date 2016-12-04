@@ -1,7 +1,7 @@
 # views.py
 from django.conf.global_settings import MEDIA_ROOT
 
-from samapp.forms import *
+from .forms import *
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
-from sam2017.settings import MEDIA_ROOT
+# from sam2017.settings import MEDIA_ROOT
 from django.contrib.auth.models import User, Group
 from datetime import datetime
 import pytz
