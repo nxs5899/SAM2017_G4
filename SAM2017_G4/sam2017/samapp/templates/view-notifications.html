@@ -4,20 +4,23 @@
 
 {% block innercontent %}
 {#    {% if user.is_authenticated %}#}
-{#        {% if notifications %}#}
+        {% if notifications %}
             <ol>
             {% for notification in notifications %}
                 <li>
-                    <div class="alert alert-dismissible alert-success" >
+                    <div class="alert alert-dismissible alert-success col-md-8 col-md-offset-2" >
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <strong>{{ notification.title }}</strong> | {{ notification.message }}.
                     </div>
                 </li>
             {% endfor %}
             </ol>
-{#        {% else %}#}
-{#            <p> You have no notifications</p>#}
-{#        {% endif %}#}
+        {% else %}
+                <div class="alert alert-dismissible alert-info col-md-6 col-md-offset-3">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Heads up!</strong> You have no notifications at the Moment.
+                </div>
+        {% endif %}
 {#    {% else %}#}
 {#        <p>Please login to view your notifications</p>#}
 {#    {% endif %}#}
