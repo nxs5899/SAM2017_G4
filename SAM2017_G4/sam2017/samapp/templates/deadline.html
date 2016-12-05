@@ -1,12 +1,12 @@
 {% extends "child-base.html" %}
-{% block title %}
-    <h1 class="center-align">
-        <span style = "color:#000000;"> Deadline Template</span>
-    </h1>
-    <div align="right">
-             <a href="/home">Go back to home</a></p>
-    </div>
-{% endblock %}
+{#{% block title %}#}
+{#    <h1 class="center-align">#}
+{#        <span style = "color:#000000;"> Deadline Template</span>#}
+{#    </h1>#}
+{#    <div align="right">#}
+{#             <a href="/home">Go back to home</a></p>#}
+{#    </div>#}
+{#{% endblock %}#}
 
 {% block innercontent %}
     <script>
@@ -18,11 +18,13 @@
         } );
     </script>
 
-<form method="post" action="/deadline/"> {% csrf_token %}
+<div class="container">
+<div class="row">
+<h1 id="header_margin">Set Deadlines</h1>
+    <form method="post" action="/deadline/"> {% csrf_token %}
     <fieldset>
 
     <!-- Form Name -->
-    <legend>Set Deadlines</legend>
 
         <table class="table table-hover" border="0" id="table_change" >
             {{ form.as_table }}
@@ -49,5 +51,7 @@
         </div>
     </fieldset>
 </form>
+</div>
+</div>
 
 {% endblock innercontent%}
