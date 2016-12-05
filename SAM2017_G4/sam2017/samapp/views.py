@@ -369,7 +369,7 @@ def SubmitPaper(request):
                                          document=form.cleaned_data['document']
                                          )
             # check if the deadline for papersubmission--To-Do
-            deadlines =Deadline.objects.filter(deadlineType='paperSubmission')
+            deadlines =get_object_or_404(Deadline, deadlineType='paperSubmission')
             deadline_val=deadlines[0]
             submissiondate=utc.localize(datetime.now())
             # print('if ',str(submissiondate) > str(deadline_val))
