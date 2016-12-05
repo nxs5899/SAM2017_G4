@@ -528,6 +528,14 @@ def assignpapers(request, paper_id):
             doc.assigned = True
 
             doc.save()
+            pcma = PCM.objects.get(pk=pcm1)
+            pcmb = PCM.objects.get(pk=pcm2)
+            pcmc = PCM.objects.get(pk=pcm3)
+
+            notification = Notification()
+            recipients = [pcma.user, pcmb.user, pcmc.user]
+            notification.sendNotification("assigntoReview", recipients)
+
             return HttpResponseRedirect('../../pccpapers/')
 
         elif pcm1 == pcm2 or pcm2 == pcm3 or pcm1 == pcm3:

@@ -1,7 +1,11 @@
 {% extends "child-base.html" %}
 
 {% block innercontent %}
+<<<<<<< HEAD
+{% if paper|length == 0%}
+=======
 {% if paper|length == 0 %}
+>>>>>>> 17a34270e50ef68d1cd2b2041dab2d787c7d1aaf
 
 <p> No papers have been assigned to you yet </p>
 
@@ -32,7 +36,7 @@
                     <td><p>{{object.title}}</p></td>
                     <td><p>{{object.version}}</p></td>
                     <td><p>{{object.formats}}</p></td>
-                    <td><a href="{% url 'downloadPDF' object.id %}" width="100" target="_blank"/> Paper </a>
+                    <td><a href="{% url 'downloadPDF' object.id %}" width="100" target="_blank"> Paper </a></td>
                 </tr>
             </tbody>
         

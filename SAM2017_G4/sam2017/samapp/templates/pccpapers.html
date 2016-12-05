@@ -35,7 +35,7 @@
                 <td> <a href="{% url 'downloadPDF' object.id %}" width="100" target="_blank"/> Paper </a></td>
 			    <td><p> <a  href="{% url 'ReviewPCC' object.id %}"> Rate Paper </a> </p></td>
 				<td> {% if object.assigned == False %}
-					<button class="btn btn-default"> <a href="{% url 'assignpapers' object.id %}">  Assign  </a> </button>
+					 <a href="{% url 'assignpapers' object.id %}">  Assign  </a>
 					{% else %}
 				
 					<p> Assigned </p> 
