@@ -1,12 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Administrator Registration{% endblock %}
 {% block head %}Administrator Registration{% endblock %}
 {% block content %}
+<div class="container">
+    <div class="row">
+        <h1 id="header_margin">Register Admin</h1>
     <form method="post" action=".">{% csrf_token %}
-        <table border="0">
+        <table class="table table-bordered table-hover" border="0">
             {{ form.as_table }}
         </table>
-        <input type="submit" value="Register" />
+        <input class="btn btn-info" type="submit" value="Register" />
     </form>
+    </div>
+</div>
     <!--<a href="/">Login</a>--> 
 {% endblock %}

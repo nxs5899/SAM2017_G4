@@ -380,11 +380,8 @@ def SubmitPaper(request):
                                          )
             # check if the deadline for papersubmission--To-Do
             deadlines =get_object_or_404(Deadline, deadlineType='paperSubmission')
-<<<<<<< HEAD
             #deadline_val=deadlines[0]
-=======
             # deadline_val=deadlines[0]
->>>>>>> 63c7369d2c5166004bbab8a46e4741e3a33f41f5
             submissiondate=utc.localize(datetime.now())
             # print('if ',str(submissiondate) > str(deadline_val))
             if submissiondate < deadlines.deadline:
