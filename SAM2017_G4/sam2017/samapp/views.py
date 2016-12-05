@@ -310,11 +310,15 @@ def NotifTemp(request):
     if request.method == 'POST' and 'submittemp' in request.POST:
         form = NotifTemForm(request.POST)
         if form.is_valid():
-            template = NotificationTemp(
-                                         title=form.cleaned_data['title'],
-                                         message=form.cleaned_data['message'],
-                                       )
-            template.save()
+            notiftype = form.cleaned_data['title']
+            notif_count = NotificationTemp.objects.filter(title=notiftype)
+            if len(notif_count)==0:
+                newNotif = form.save(commit=False)
+                newNotif.save()
+            else:
+                notif_count.delete()
+                newNotif = form.save(commit=False)
+                newNotif.save()
 
             return HttpResponseRedirect('/notiftemp/')
 
@@ -376,10 +380,10 @@ def SubmitPaper(request):
                                          )
             # check if the deadline for papersubmission--To-Do
             deadlines =get_object_or_404(Deadline, deadlineType='paperSubmission')
-            deadline_val=deadlines[0]
+            # deadline_val=deadlines[0]
             submissiondate=utc.localize(datetime.now())
             # print('if ',str(submissiondate) > str(deadline_val))
-            if submissiondate < deadline_val.deadline:
+            if submissiondate < deadlines.deadline:
 
                 paper.save()
                 notification = Notification()
@@ -581,14 +585,14 @@ def review_Rate_PCM(request, paper_id):
     paper_info = Paper.objects.get(pk=doc.id)# fetch paper id from pcm page
     utc = pytz.UTC
     deadlines = Deadline.objects.filter(deadlineType='paperReview')
-    deadline_val = deadlines[0]
+    # deadline_val = deadlines[0]
     currentDate = utc.localize(datetime.now())
 
     # if the method is POST and rating has to be saved
     if request.method=='POST' or '/PCM_review/' in request.POST:
         print('inside POst')
-        print('deadline', currentDate , deadline_val.deadline)
-        if currentDate<deadline_val.deadline:
+        print('deadline', currentDate , deadlines.deadline)
+        if currentDate<deadlines.deadline:
 
 
             # reviewer.paperId=paprer_info#request.POST.get('title')
@@ -639,13 +643,13 @@ def review_PCC(request, paper_id):
 
     print(request.method)
     deadlines = Deadline.objects.filter(deadlineType='paperRate')
-    deadline_val = deadlines[0]
+    # deadline_val = deadlines[0]
     currentDate = utc.localize(datetime.now())
-    print('deadline', currentDate, deadline_val.deadline)
+    print('deadline', currentDate, deadlines.deadline)
     if request.method == 'POST' and 'Rate' in request.POST:
 
 
-        if currentDate<deadline_val.deadline:
+        if currentDate<deadlines.deadline:
 
 
             form = PccForm(request.POST)
@@ -661,7 +665,7 @@ def review_PCC(request, paper_id):
             return HttpResponseRedirect('/Deadline_Error/')
 
     elif request.method =='POST' and 'Conflict' in request.POST:
-        if currentDate < deadline_val.deadline:
+        if currentDate < deadlines.deadline:
             review1=Review.objects.get(id=review.id)
             review1.grade=0
             review1.save()
