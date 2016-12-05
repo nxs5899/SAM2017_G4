@@ -1,8 +1,9 @@
 {% extends "child-base.html" %}
 {% block innercontent %}
-</br>
-
-	<h1 id="header_margin">&nbsp;Sorry! The deadline has passed. You may not submit a paper</h1>
-
+</br><br/>
+<div class="alert alert-dismissible alert-danger col-md-6 col-md-offset-3">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Sorry! The deadline has passed. You may not submit a paper!</strong>
+</div>
 
 {% endblock innercontent %}
