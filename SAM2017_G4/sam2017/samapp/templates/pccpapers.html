@@ -9,7 +9,15 @@
 </div>
 {% endblock %}
 
+
+
 {% block innercontent %}
+
+{% if paper|length == 0 %}
+
+<p> No papers have been submitted yet. </p>
+
+{% else %}
 <div class="container">
 <div class="row">
     <h1 id="header_margin">View Papers</h1>
@@ -51,5 +59,7 @@
 
     </div>
     </div>
+	{% endif %}
 
 	{% endblock innercontent %}
+	
