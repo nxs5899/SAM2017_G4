@@ -370,10 +370,10 @@ def SubmitPaper(request):
                                          )
             # check if the deadline for papersubmission--To-Do
             deadlines =get_object_or_404(Deadline, deadlineType='paperSubmission')
-            deadline_val=deadlines[0]
+            #deadline_val=deadlines[0]
             submissiondate=utc.localize(datetime.now())
             # print('if ',str(submissiondate) > str(deadline_val))
-            if submissiondate < deadline_val.deadline:
+            if submissiondate < deadlines.deadline:
 
                 paper.save()
                 notification = Notification()
