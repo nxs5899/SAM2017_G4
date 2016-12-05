@@ -10,14 +10,19 @@
 
 {% block innercontent %}
 
+<div class="container">
+<div class="row">
+<h1 id="header_margin">Notification Template</h1>
 <form method="post" action="/notiftemp/"> {% csrf_token %}
         <table class="table table-hover" id="table_change"  border="0" >
             {{ form.as_table }}
 			
         </table>
 		<div class="center-align">
-             <input class="button-below-table" type="submit" value="Submit" name="submittemp"/></p>
+             <input class="btn btn-info" type="submit" value="Submit" name="submittemp"/></p>
         </div>
 </form>
+</div>
+</div>
 
 {% endblock innercontent%}
