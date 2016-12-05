@@ -331,10 +331,16 @@ def Deadlines(request):
     if request.method == 'POST' and 'submitdeadline' in request.POST:
         form = DeadlineForm(request.POST)
         if form.is_valid():
-            deadlineType = form.cleaned_data['deadlineType']
+            deadlinetype = form.cleaned_data['deadlineType']
             deadline = (request.POST.get('deadline'))
-            newdeadline = form.save(commit=False)
-            newdeadline.save()
+            deadline_count = Deadline.objects.filter(deadlineType=deadlinetype)
+            if len(deadline_count)==0:
+                newdeadline = form.save(commit=False)
+                newdeadline.save()
+            else:
+                deadline_count.delete()
+                newdeadline = form.save(commit=False)
+                newdeadline.save()
             # newdeadline = Deadline(
             #                              deadlineType=form.cleaned_data['deadlineType'],
             #                              deadline=form.cleaned_data['deadline'],

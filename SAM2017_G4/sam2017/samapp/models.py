@@ -119,11 +119,11 @@ class NotificationTemp(models.Model):
 
 class Deadline(models.Model):
     deadlineTypes = (
-        ('paperSubmission', 'paperSubmission'),
-        ('paperSelection', 'paperSelection'),
-        ('paperAssign', 'paperAssign'),
-        ('paperReview', 'paperReview'),
-        ('paperRate', 'paperRate'),
+        ('paperSubmission', 'Paper Submission'),
+        ('paperSelection', 'Paper Selection'),
+        ('paperAssign', 'Paper Assign'),
+        ('paperReview', 'Paper Review'),
+        ('paperRate', 'Paper Rate'),
     )
 
     deadlineType = models.CharField(max_length=500, choices=deadlineTypes)
